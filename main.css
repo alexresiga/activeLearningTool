@@ -1,5 +1,11 @@
+html {
+    width: 98.89%;
+    background-color: grey;
+}
+
 html,body,.col-md-12,.row {
     height:100%;
+   
   }
   .row > div {
     height:100%;
@@ -70,9 +76,7 @@ background-color: transparent;
 #history{
     font-size: 1.2em;
 }
-#historyList{
-    scrollbar-arrow-color: white;
-}
+
 #center {
     background-color: white;
     height: 90%;
@@ -83,13 +87,10 @@ background-color: transparent;
     height: 10%;
     float: left;
     width: 100%;
-    border: 5px solid grey;
+    
     text-align: center;
 }
 
-#center-main {
-    border: 5px solid black;
-}
 #right {
     background-color: grey;
     
