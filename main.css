@@ -1,0 +1,96 @@
+html,body,.col-md-12,.row {
+    height:100%;
+  }
+  .row > div {
+    height:100%;
+  }
+
+#left{
+    background-color: grey;
+    color: white;
+    padding-left: 25px;
+    
+}
+
+#left > #toolname {
+    padding-top: 5px;
+    margin-bottom: 10px;
+    font-size: 1.75em;
+}
+#parent {
+    white-space:nowrap;
+    margin-bottom: 30px;
+}
+#task {
+   display: inline-block;
+    font-size: 1.2em;
+    height: 25px;
+    margin-right: 27px;
+    vertical-align: middle!important;
+    position: relative;
+}
+#dropdown {   
+display: inline-block;
+
+position: relative;
+background-color: transparent;
+
+}
+.btn.btn-simple {
+    border: 3px solid lightgrey;
+    color: white!important;
+}
+
+#left > #buttons .btn {
+    margin-left: 0;
+    margin-right: 0;
+    border-spacing: 0;
+}
+
+#left > #buttons .active {
+    color: white;
+    outline: solid 2px lightgray;
+    background-color: grey;
+
+  }
+#view{
+    font-size: 1.2em;
+}
+
+#statistics{
+    margin-top: 20px;
+    font-size: 1.2em;
+}
+
+#pbar{
+    margin-top: 7px;
+    height: 25px;
+    margin-bottom: 40px;
+}
+#history{
+    font-size: 1.2em;
+}
+#historyList{
+    scrollbar-arrow-color: white;
+}
+#center {
+    background-color: white;
+    height: 90%;
+    
+}
+#center-below {
+    background-color: wheat;
+    height: 10%;
+    float: left;
+    width: 100%;
+    border: 5px solid grey;
+    text-align: center;
+}
+
+#center-main {
+    border: 5px solid black;
+}
+#right {
+    background-color: grey;
+    
+}
