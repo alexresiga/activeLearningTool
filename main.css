@@ -1,6 +1,6 @@
 html {
     width: 98.89%;
-    background-color: grey;
+    background-color: #1F3249;
 }
 
 html, body, .col-md-12, .row {
@@ -13,7 +13,7 @@ html, body, .col-md-12, .row {
 }
 
 #left {
-    background-color: grey;
+    background-color: #1F3249;
     color: white;
     padding-left: 25px;
 
@@ -61,7 +61,7 @@ html, body, .col-md-12, .row {
 #left > #buttons .active {
     color: white;
     outline: solid 2px lightgray;
-    background-color: grey;
+    background-color: #1F3249;
 
 }
 
@@ -100,6 +100,6 @@ html, body, .col-md-12, .row {
 }
 
 #right {
-    background-color: grey;
+    background-color: #1F3249;
 
 }
