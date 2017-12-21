@@ -1,0 +1,32 @@
+{
+  "categories": [
+   {
+      "name": "System",
+      "items": [
+        "Cropland",
+        "Pasture",
+        "Rangeland",
+        "Forest",
+        "Horticulture",
+        "Urban",
+        "Organic",
+        "Orchard" 
+      ]
+    },
+   {
+      "name": "Crop",
+      "items": [
+        "Corn",
+        "Cotton",
+        "Soybeans",
+        "Sorghum",
+        "Peanuts",
+        "Rice",
+        "Tobacco",
+        "Potatoes",
+        "Tree fruit & nut",
+        "Other" 
+      ]
+    }
+  ]
+}
