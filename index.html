@@ -65,7 +65,7 @@
         <div id="statistics">
             Statistics
         </div>
-        <div id="pbar" class="progress">
+        <div id="pbar" class="progress progress-line-primary">
             <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
                  style="width: 30%;">
                 <span class="sr-only">30% Complete</span>
@@ -74,23 +74,11 @@
         <div id="history">
             History
         </div>
-        <div id="historyList" class="content text-center" style="overflow:auto;height:38%;">
-            <p>lorem ipsum</p>
-            <p>lorem ipsum</p>
-            <p>lorem ipsum</p>
-            <p>lorem ipsum</p>
-            <p>lorem ipsum</p>
-            <p>lorem ipsum</p>
-            <p>lorem ipsum</p>
-            <p>lorem ipsum</p>
-            <p>lorem ipsum</p>
-            <p>lorem ipsum</p>
-            <p>lorem ipsum</p>
-            <p>lorem ipsum</p>
-            <p>lorem ipsum</p>
-            <p>lorem ipsum</p>
-            <p>lorem ipsum</p>
-            <p>lorem ipsum</p>
+        <div id="historyList" class="content" style="overflow:auto;height:38%;margin-top: 5px;">
+            <p>Soil fertility and fertilizers</p>
+            <p>Soil compaction and root growth</p>
+            <p>South East tropical warm...</p>
+            <p>The role of fine and coarse roots in...</p>
         </div>
     </div>
     <div id="center-main" class="col-xs-6">
@@ -104,13 +92,13 @@
             ANNOTATIONS
         </div>
         <div class="radio">
-                <label>
+                <label id="relevant">
                     <input type="radio" name="optionsRadios">
                     Relevant
                 </label>
             </div>
             <div class="radio">
-                <label>
+                <label id="irrelevant">
                     <input type="radio" name="optionsRadios" checked="true">
                     Irrelevant
                 </label>

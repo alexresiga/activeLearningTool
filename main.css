@@ -80,8 +80,9 @@ html, body, .col-md-12, .row {
 
 #pbar {
     margin-top: 7px;
-    height: 25px;
+    height: 15px;
     margin-bottom: 40px;
+    border-radius: 5px;
 }
 
 #history {
@@ -95,11 +96,11 @@ html, body, .col-md-12, .row {
 }
 
 #center-below {
-    background-color: wheat;
+    background-color: #1F3249;
     height: 10%;
     float: left;
     width: 100%;
-
+    color: white;
     text-align: center;
 }
 
@@ -116,3 +117,11 @@ html, body, .col-md-12, .row {
 div#annotations {
     color: white;
 } 
+
+#relevant {
+    color: green;
+}
+
+#irrelevant {
+    color: red!important;
+}
