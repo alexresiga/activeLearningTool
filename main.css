@@ -52,6 +52,10 @@ html, body, .col-md-12, .row {
     color: white !important;
 }
 
+.btn.btn.btn-simple.active{
+    background-color: transparent!important;    
+}
+
 #left > #buttons .btn {
     margin-left: 0;
     margin-right: 0;
@@ -101,5 +105,14 @@ html, body, .col-md-12, .row {
 
 #right {
     background-color: #1F3249;
+    font-size: 1.9em;
+    color: white;
 
 }
+#right > .title-right {
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+div#annotations {
+    color: white;
+} 
