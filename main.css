@@ -92,7 +92,17 @@ html, body, .col-md-12, .row {
 #center {
     background-color: white;
     height: 90%;
+    padding: 35px!important;
+    overflow: auto;
+    font-size: 1.2em;
+    color: gray;
+}
 
+#center > #title {
+    font-size: 1.2em;
+    color: gray;
+    margin-bottom: 15px;
+    
 }
 
 #center-below {
