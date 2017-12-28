@@ -1,6 +1,9 @@
 html {
     width: 98.89%;
+    height: 90%;
     background-color: #1F3249;
+    padding: 0;
+    margin:0;
 }
 
 html, body, .col-md-12, .row {
@@ -15,7 +18,7 @@ html, body, .col-md-12, .row {
 #left {
     background-color: #1F3249;
     color: white;
-    padding-left: 25px;
+    padding-left: 45px;
 
 }
 
@@ -34,14 +37,15 @@ html, body, .col-md-12, .row {
     display: inline-block;
     font-size: 1.2em;
     height: 25px;
-    margin-right: 27px;
+    margin-right: 15px;
     vertical-align: middle !important;
     position: relative;
 }
 
 #dropdown {
     display: inline-block;
-
+    padding: 12 15px;
+    
     position: relative;
     background-color: transparent;
 
@@ -50,6 +54,7 @@ html, body, .col-md-12, .row {
 .btn.btn-simple {
     border: 3px solid lightgrey;
     color: white !important;
+    padding: 12 15px;
 }
 
 .btn.btn.btn-simple.active{
@@ -60,6 +65,8 @@ html, body, .col-md-12, .row {
     margin-left: 0;
     margin-right: 0;
     border-spacing: 0;
+    font-size: 0.9em;
+    padding: 12px 15px;
 }
 
 #left > #buttons .active {
@@ -73,6 +80,14 @@ html, body, .col-md-12, .row {
     font-size: 1.2em;
 }
 
+#searchistory {
+    font-size: 1.2em;
+}
+
+#searchistory > p {
+    font-size: 0.7em;
+}
+
 #statistics {
     margin-top: 20px;
     font-size: 1.2em;
@@ -81,8 +96,8 @@ html, body, .col-md-12, .row {
 #pbar {
     margin-top: 7px;
     height: 15px;
-    margin-bottom: 40px;
     border-radius: 5px;
+    margin: 0;
 }
 
 #history {
