@@ -7,12 +7,11 @@ $.getJSON('https://6c05830f-a7ef-42b2-a90a-0b3c35cef64c.mock.pstmn.io/annotation
             var item = category['items'][j];
             $('#annotation' + i).append('<div class="checkbox"><label><input type="checkbox" name="optionsCheckboxes"> <span class="checkbox-material"><span class="check"></span></span>' + item + '</label></div>');
         }
-        $('#annotation' + i).append()
     }
 });
 
 $.getJSON('https://raw.githubusercontent.com/alexresiga/activeLearningTool/master/valid_filtered_0236.json', function(json) {
-    $('#title').html(json['metadata']['title'])
-    $('#abstract').html(json['documentAbstract'])
-    $('#content').html(json['sections'][0]['content'])
+    $('#title').html(json['metadata']['title']);
+    $('#abstract').html(json['documentAbstract']);
+    $('#content').html(json['sections'][0]['content']);
 });
