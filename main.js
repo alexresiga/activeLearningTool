@@ -11,8 +11,7 @@ $.getJSON('https://6c05830f-a7ef-42b2-a90a-0b3c35cef64c.mock.pstmn.io/annotation
     }
 });
 
-$.getJSON('http://redmine.wittos.com/attachments/download/3726/valid_filtered_0236.json', function(json) {
+$.getJSON('https://raw.githubusercontent.com/alexresiga/activeLearningTool/master/valid_filtered_0236.json', function(json) {
     $('#title').html(json['metadata']['title'])
     $('#abstract').html(json['documentAbstract'])
-    $('#')
 });
