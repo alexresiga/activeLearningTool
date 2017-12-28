@@ -104,6 +104,10 @@ html, body, .col-md-12, .row {
     margin-bottom: 15px;
     
 }
+.author {
+    display: inline-block;
+    margin: 20px;
+}
 
 #center-below {
     background-color: #1F3249;

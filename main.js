@@ -14,4 +14,8 @@ $.getJSON('https://raw.githubusercontent.com/alexresiga/activeLearningTool/maste
     $('#title').html(json['metadata']['title']);
     $('#abstract').html(json['documentAbstract']);
     $('#content').html(json['sections'][0]['content']);
+    for ( var i = 0; i <json['metadata']['authors'].length; ++i) {
+        var fullname = json['metadata']['authors'][i]['givenName'] + ' ' +json['metadata']['authors'][i]['surName'];
+        $('#authors').append('<div id="author'+ i +'" class="author">'+ fullname +'</div>');
+    }
 });
