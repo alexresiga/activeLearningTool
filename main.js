@@ -31,8 +31,17 @@ $('#clear-all').on('click', function () {
 
 $('#search-bar').keypress(function (e) {
     if (e.which == 13 && $('#search-bar').val() !== '') {
-        $('#search-history').append('<i class="fa fa-times" style="color:white;"></i> ' + $('#search-bar').val() + '<br>');
+        $('#search-history').append('<div class="search-item"><i class="fa fa-times" style="color:white;"></i> ' + $('#search-bar').val() + '<br></div>');
         $('#search-bar').val('');
+
+        $('.search-item > i').on('click', function () {
+            $(this).parent().remove();
+        });
+
         return false;
     }
+});
+
+$('.search-item > i').on('click', function () {
+    $(this).parent().remove();
 });
