@@ -24,3 +24,15 @@ $('.dropdown-menu').children().on('click', function () {
     $('#dropdown').find('a').first().text($(this).text());
     $('#dropdown').find('a').first().append('<b class="caret"></b>');
 });
+
+$('#clear-all').on('click', function () {
+    $('#search-history').empty();
+});
+
+$('#search-bar').keypress(function (e) {
+    if (e.which == 13 && $('#search-bar').val() !== '') {
+        $('#search-history').append('<i class="fa fa-times" style="color:white;"></i> ' + $('#search-bar').val() + '<br>');
+        $('#search-bar').val('');
+        return false;
+    }
+});
