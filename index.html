@@ -31,28 +31,28 @@
 <div class="row">
     <div id="left" class="col-xs-3">
         <div class="content" id="toolname">Active Learning Tool</div>
-        <div id="parent" class="content">
+        <div class="parent content">
             <div id="task">Task</div>
             <div id="dropdown" class="dropdown">
-                <a href="#" class="btn btn-simple dropdown-toggle" data-toggle="dropdown" style="padding:12px 20px!important;">
+                <a href="#" id="dropdown-button" class="btn btn-simple dropdown-toggle" data-toggle="dropdown" style="padding:12px 20px!important;">
                     Multi-label classification
                     <b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu">
                     <li><a href="#">Multi-label classification </a> </li>
+                    <li class="divider"></li>
                     <li><a href="#">Named entity annotation </a></li>
                     <li class="divider"></li>
                     <li><a href="#">Relation annotation </a></li>
                 </ul>
             </div>
         </div>
-        <div id="view" class="content">
-            View
-        </div>
-        <div id="buttons" class="content text-center">
+        
+        <div id="buttons" class="content">
+                <div id="view" class="content" style="display:inline-block!important;left:0;margin-right:10px;">View</div>
             <button class="btn btn-white">All</button>
-            <button class="btn btn-white">Incomplete</button>
-            <button class="btn btn-white">Complete</button>
+            <button class="btn btn-white" style="background-color:#4D6A8A;color:white!important">Incomplete</button>
+            <button class="btn btn-white" style="background-color:#4D6A8A;color:white!important">Complete</button>
         </div>
         <div class="form-group label-floating">
             <label class="control-label">Search</label>
@@ -67,7 +67,7 @@
                 <div class="search-item"><i class="fa fa-times" style="color:white;"></i> notag: orchard<br></div>
             </div>
         </div>
-        <div id="statistics" style="margin-bottom: 20px;">
+        <div id="statistics" style="margin-bottom: 10px;">
             Statistics
         </div>
         <div style="white-space:nowrap">
@@ -100,15 +100,17 @@
                 <p style="font-weight: bold;"><br><br>CONTENT<br><br></p>
                 <div id="content" class="content" style="white-space: pre-line"></div>
             </div>
-            <div id="center-below" class="cold-xs-12 content text-center" style="padding: 15px;">
-                <i class=" fa fa-arrow-left fa-3x"></i>
-                <i class=" fa fa-arrow-right fa-3x" style="margin-right: 70px;margin-left: 25px;"></i>
+            <div id="center-below" class="col-xs-12 content text-center" style="padding: 5px 0 5px 0!important;">
+                <div style="background-image: url('assets/img/buttons_bottom.png'); background-size: 720px 73px;background-repeat:no-repeat;position: relative;height: 75px;">
+                    <img src="assets/img/arrow_bottom_left.png" style="position:absolute;left: 65px;top:10px;">
+                    <img src="assets/img/arrow_bottom_right.png" style="position:absolute;left:120px;top:10px;">
+                    <img src="assets/img/bottom_check.png" style="position:absolute;left:270px;top:10px;">
+                    <img src="assets/img/bottom_exclamation.png" style="position:absolute;left:350px;top:10px;">
+                    <img src="assets/img/arrow_bottom_back.png" style="position:absolute;left: 485px;top:10px;">
+                    <img src="assets/img/arrow_bottom_back2.png" style="position:absolute;left: 555px;top:10px;">
+                    <img src="assets/img/arrow_bottom_forward.png" style="position:absolute;left: 625px;top:10px;">
+                </div>
                 
-                <i class="fa fa-check fa-3x"></i>
-                <i class="fa fa-exclamation fa-3x" style="margin-right: 70px;margin-left: 25px;"></i>
-                <i class="fa fa-undo fa-3x"style="margin-right: 25px"></i>
-                <i class="fa fa-undo fa-3x" style="margin-right: 25px"></i>
-                <i class="fa fa-repeat fa-3x"></i>
             </div>
         </div>
     </div>

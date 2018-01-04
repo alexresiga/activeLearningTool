@@ -28,7 +28,7 @@ html, body, .col-md-12, .row {
     font-size: 1.75em;
 }
 
-#parent {
+.parent {
     white-space: nowrap;
     margin-bottom: 30px;
 }
@@ -44,11 +44,7 @@ html, body, .col-md-12, .row {
 
 #dropdown {
     display: inline-block;
-    padding: 12 15px;
-    
     position: relative;
-    background-color: transparent;
-
 }
 
 .btn.btn-simple {
@@ -57,22 +53,25 @@ html, body, .col-md-12, .row {
     padding: 12 15px;
 }
 
-.btn.btn.btn-simple.active{
-    background-color: transparent!important;    
+#dropdown-button{
+    background-color: white;
+    color: #1F3249!important;
+    border-radius: 5px;
 }
 
 #left > #buttons .btn {
+    display: inline-block;
     margin-left: 0;
     margin-right: 0;
     border-spacing: 0;
     font-size: 0.9em;
-    padding: 12px 15px;
+    padding: 12px 10px;
 }
 
 #left > #buttons .active {
     color: white;
     outline: solid 2px lightgray;
-    background-color: #1F3249;
+    background-color: #1F3249!important;
 
 }
 
@@ -94,8 +93,8 @@ html, body, .col-md-12, .row {
 }
 
 #pbar {
-    margin-top: 7px;
-    height: 15px;
+    margin-top: 5px;
+    height: 10px;
     border-radius: 5px;
     margin: 0;
 }
