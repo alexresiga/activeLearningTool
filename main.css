@@ -157,3 +157,8 @@ div#annotations {
 #irrelevant {
     color: #962d07;
 }
+
+.checkbox .checkbox-material .check:before {
+    margin-top: -5px!important;
+    margin-left: 5px!important;
+}
