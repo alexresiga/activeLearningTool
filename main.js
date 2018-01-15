@@ -10,15 +10,6 @@ $.getJSON('https://6c05830f-a7ef-42b2-a90a-0b3c35cef64c.mock.pstmn.io/annotation
     }
 });
 
-$.getJSON('https://raw.githubusercontent.com/alexresiga/activeLearningTool/master/valid_filtered_0236.json', function (json) {
-    $('#title').html(json['metadata']['title']);
-    $('#abstract').html(json['documentAbstract']);
-    $('#content').html(json['sections'][0]['content']);
-    for (var i = 0; i < json['metadata']['authors'].length; ++i) {
-        var fullname = json['metadata']['authors'][i]['givenName'] + ' ' + json['metadata']['authors'][i]['surName'];
-        $('#authors').append('<div id="author' + i + '" class="author">' + fullname + '</div>');
-    }
-});
 
 $('.dropdown-menu').children().on('click', function () {
     $('#dropdown').find('a').first().text($(this).text());
@@ -45,3 +36,38 @@ $('#search-bar').keypress(function (e) {
 $('.search-item > i').on('click', function () {
     $(this).parent().remove();
 });
+var documents;
+$.getJSON('https://6c05830f-a7ef-42b2-a90a-0b3c35cef64c.mock.pstmn.io/documents?type=all|incomplete|complete', function (json) {
+    documents = json['documents'];
+    load_document(0);
+});
+
+var index = 0;
+$('#arrow-left').on('click', function () {
+    if (index === 0)
+        index = documents.length - 1;
+    else
+        index = index - 1
+
+    load_document(index);
+});
+
+$('#arrow-right').on('click', function () {
+    index = (index + 1) % documents.length;
+
+    load_document(index);
+});
+
+function load_document(i) {
+    $.getJSON('https://6c05830f-a7ef-42b2-a90a-0b3c35cef64c.mock.pstmn.io/document?id=' + documents[i]['id'], function (json) {
+        $('#title').html(json['metadata']['title']);
+        $('#abstract').html(json['documentAbstract']);
+        $('#content').html(json['sections'][0]['content']);
+
+        $('#authors').empty();
+        for (var i = 0; i < json['metadata']['authors'].length; ++i) {
+            var fullname = json['metadata']['authors'][i]['givenName'] + ' ' + json['metadata']['authors'][i]['surName'];
+            $('#authors').append('<div id="author' + i + '" class="author">' + fullname + '</div>');
+        }
+    });
+}
