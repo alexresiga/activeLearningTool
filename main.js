@@ -20,6 +20,10 @@ $('#clear-all').on('click', function () {
     $('#search-history').empty();
 });
 
+$('#clear-all-kwords').on('click', function (){
+    $('input:checkbox').removeAttr('checked');
+});
+
 $('#search-bar').keypress(function (e) {
     if (e.which == 13 && $('#search-bar').val() !== '') {
         $('#search-history').append('<div class="search-item"><i class="fa fa-times" style="color:white;"></i> ' + $('#search-bar').val() + '<br></div>');
