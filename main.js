@@ -45,12 +45,16 @@ function selectHTML() {
             var c = document.selection.createRange();
             return c.htmlText;
         }
-        
+        var w = getSelection().getRangeAt(0);
+        if (w.startOffset === w.endOffset){
+            return ""
+        }
+        else{
         var nNd = document.createElement("span");
         nNd.setAttribute("class", "selection");
-        var w = getSelection().getRangeAt(0);
+        
         w.surroundContents(nNd);
-        return nNd.innerHTML;
+        return nNd.innerHTML;}
     } catch (e) {
         if (window.ActiveXObject) {
             return document.selection.createRange();
@@ -62,9 +66,7 @@ function selectHTML() {
 
 $(function() {
     $('#center').mouseup( function() {
-        
         var mytext = selectHTML();
-        console.log(mytext);
         $('.selection').css({"background":"yellow","font-weight":"bold"});
     });
 });
