@@ -1,0 +1,19 @@
+<textarea id="quote">
+    Some text here
+</textarea>
+     
+<div id="output"></div>
+    
+<script>
+    
+var quotearea = document.getElementById('quote')
+var output = document.getElementById('output')
+quotearea.addEventListener('mouseup', function(){
+    if (this.selectionStart != this.selectionEnd){ // check the user has selected some text inside field
+        console.log("da");
+        var selectedtext = this.value.substring(this.selectionStart, this.selectionEnd)
+        output.innerHTML = selectedtext
+    }
+}, false)
+    
+</script>

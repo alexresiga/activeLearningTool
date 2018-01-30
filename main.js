@@ -45,3 +45,35 @@ $('#search-bar').keypress(function (e) {
 $('.search-item > i').on('click', function () {
     $(this).parent().remove();
 });
+
+//pfaaa stie tata
+function selectHTML() {
+    
+    try {
+        if (window.ActiveXObject) {
+            var c = document.selection.createRange();
+            return c.htmlText;
+        }
+        
+        var nNd = document.createElement("span");
+        nNd.setAttribute("class", "selection");
+        var w = getSelection().getRangeAt(0);
+        w.surroundContents(nNd);
+        return nNd.innerHTML;
+    } catch (e) {
+        if (window.ActiveXObject) {
+            return document.selection.createRange();
+        } else {
+            return getSelection();
+        }
+    }
+}
+
+$(function() {
+    $('#center').mouseup( function() {
+        
+        var mytext = selectHTML();
+        console.log(mytext);
+        $('.selection').css({"background":"yellow","font-weight":"bold"});
+    });
+});
