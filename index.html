@@ -36,12 +36,13 @@
         <div class="parent content">
             <div id="task">Task</div>
             <div id="dropdown" class="dropdown">
-                <a href="#" id="dropdown-button" class="btn btn-simple dropdown-toggle" data-toggle="dropdown" style="padding:12px 20px!important;">
+                <a href="#" id="dropdown-button" class="btn btn-simple dropdown-toggle" data-toggle="dropdown"
+                   style="padding:12px 20px!important;">
                     Multi-label classification
                     <b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu">
-                    <li><a href="#">Multi-label classification </a> </li>
+                    <li><a href="#">Multi-label classification </a></li>
                     <li class="divider"></li>
                     <li><a href="#">Named entity annotation </a></li>
                     <li class="divider"></li>
@@ -49,9 +50,9 @@
                 </ul>
             </div>
         </div>
-        
+
         <div id="buttons" class="content">
-                <div id="view" class="content" style="display:inline-block!important;left:0;margin-right:10px;">View</div>
+            <div id="view" class="content" style="display:inline-block!important;left:0;margin-right:10px;">View</div>
             <button id="all" class="btn btn-white">All</button>
             <button class="btn btn-white" style="background-color:#4D6A8A;color:white">Incomplete</button>
             <button class="btn btn-white" style="background-color:#4D6A8A;color:white">Complete</button>
@@ -62,10 +63,16 @@
         </div>
         <div>
             <div style="white-space:nowrap;">
-            <div class="content" style="display:inline-block;">Current search</div> <button id="clear-all" class="content text-center" style="font-size:0.9em ;position:absolute;right:15px;display:inline-block;border: 3px solid #2B7CC9;border-radius:7px;background-color: #2B7CC9;"><i class="fa fa-times" style="color:white;"></i> clear all</button> <br></div>
+                <div class="content" style="display:inline-block;">Current search</div>
+                <button id="clear-all" class="content text-center"
+                        style="font-size:0.9em ;position:absolute;right:15px;display:inline-block;border: 3px solid #2B7CC9;border-radius:7px;background-color: #2B7CC9;">
+                    <i class="fa fa-times" style="color:white;"></i> clear all
+                </button>
+                <br></div>
             <div id="search-history">
                 <div class="search-item"><i class="fa fa-times" style="color:white;"></i> tag: corn <br></div>
-                <div class="search-item"><i class="fa fa-times" style="color:white;"></i> "nutrient management"<br></div>
+                <div class="search-item"><i class="fa fa-times" style="color:white;"></i> "nutrient management"<br>
+                </div>
                 <div class="search-item"><i class="fa fa-times" style="color:white;"></i> notag: orchard<br></div>
             </div>
         </div>
@@ -73,12 +80,15 @@
             Statistics
         </div>
         <div style="white-space:nowrap">
-        <div style="display:inline-block;height:15px;width:262px;">
-        <div id="pbar" class="progress progress-line-primary">
-            <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 21%;"><span class="sr-only">30% Complete</span></div>
-        </div>
-        </div>
-        <div class="content text-center" style="display:inline-block;margin-left:15px;margin-bottom:15px!important;">21%</div>
+            <div style="display:inline-block;height:15px;width:262px;">
+                <div id="pbar" class="progress progress-line-primary">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0"
+                         aria-valuemax="100" style="width: 21%;"><span class="sr-only">30% Complete</span></div>
+                </div>
+            </div>
+            <div class="content text-center"
+                 style="display:inline-block;margin-left:15px;margin-bottom:15px!important;">21%
+            </div>
         </div>
         <div id="history">
             History
@@ -95,7 +105,7 @@
             <div id="center" class="col-xs-12">
                 <div id="title" class="content text-center" style="font-weight: bold;"></div>
                 <div id="authors" class="content text-center" style="white-space: nowrap">
-                                       
+
                 </div>
                 <p style="font-weight: bold;"><br><br>ABSTRACT<br><br></p>
                 <div id="abstract" class="content"></div>
@@ -106,40 +116,49 @@
                 <div style="width: 100%;background-image: url('assets/img/buttons_bottom.png'); background-size: 100% 95%;background-repeat:no-repeat;position: absolute;height: 75px;">
                     <!-- Matei was here -->
                     <div style="position:relative; width:31%; float: left;text-align: center;">
-                        <img src="assets/img/arrow_bottom_left.png" style="position:relative;top:10px;margin-left:10px;">
-                        <img src="assets/img/arrow_bottom_right.png" style="position:relative;top:10px;margin-left:10px;">
+                        <img id="arrow-left" src="assets/img/arrow_bottom_left.png"
+                             style="position:relative;top:10px;margin-left:10px;">
+                        <img id="arrow-right" src="assets/img/arrow_bottom_right.png"
+                             style="position:relative;top:10px;margin-left:10px;">
                     </div>
                     <div style="position:relative; width:28%; float: left;text-align: center;">
                         <img src="assets/img/bottom_check.png" style="position:relative;top:10px;margin-left:10px;">
-                        <img src="assets/img/bottom_exclamation.png" style="position:relative;top:10px;margin-left:10px;">
+                        <img src="assets/img/bottom_exclamation.png"
+                             style="position:relative;top:10px;margin-left:10px;">
                     </div>
                     <div style="position:relative; width:41%; float:left;text-align: center;">
-                        <img src="assets/img/arrow_bottom_back.png" style="position:relative;top:10px;margin-left:10px;">
-                        <img src="assets/img/arrow_bottom_back2.png" style="position:relative;top:10px;margin-left:10px;">
-                        <img src="assets/img/arrow_bottom_forward.png" style="position:relative;top:10px;margin-left:10px;">
+                        <img src="assets/img/arrow_bottom_back.png"
+                             style="position:relative;top:10px;margin-left:10px;">
+                        <img src="assets/img/arrow_bottom_back2.png"
+                             style="position:relative;top:10px;margin-left:10px;">
+                        <img src="assets/img/arrow_bottom_forward.png"
+                             style="position:relative;top:10px;margin-left:10px;">
                     </div>
                 </div>
-                
+
             </div>
         </div>
     </div>
     <div id="right" class="col-xs-3">
         <div class="title-right content" style="white-space:nowrap">
             <div style="display:inline-block">ANNOTATIONS</div>
-            <button id="clear-all" class="content text-center" style="font-size:0.5em ;position:absolute;right:15px;display:inline-block;border: 3px solid #2B7CC9;border-radius:7px;background-color: #2B7CC9;"><i class="fa fa-times" style="color:white;"></i> clear all</button>
+            <button id="clear-all" class="content text-center"
+                    style="font-size:0.5em ;position:absolute;right:15px;display:inline-block;border: 3px solid #2B7CC9;border-radius:7px;background-color: #2B7CC9;">
+                <i class="fa fa-times" style="color:white;"></i> clear all
+            </button>
         </div>
-            <div class="radio">
-                <label id="irrelevant">
-                    <input type="radio" name="optionsRadios">
-                    Irrelevant
-                </label>
-            </div>
-            <div class="radio">
-                <label id="relevant">
-                    <input type="radio" name="optionsRadios" checked="true">
-                    Relevant
-                </label>
-            </div>
+        <div class="radio">
+            <label id="irrelevant">
+                <input type="radio" name="optionsRadios">
+                Irrelevant
+            </label>
+        </div>
+        <div class="radio">
+            <label id="relevant">
+                <input type="radio" name="optionsRadios" checked="true">
+                Relevant
+            </label>
+        </div>
         <div id="annotations" style="overflow:auto;height: 81%;"></div>
     </div>
 </div>
