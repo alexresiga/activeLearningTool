@@ -22,6 +22,7 @@ $('#clear-all').on('click', function () {
 
 $('#clear-all-kwords').on('click', function (){
     $('input:checkbox').removeAttr('checked');
+    $("span").contents().unwrap();
 });
 
 $('#search-bar').keypress(function (e) {
@@ -71,6 +72,7 @@ function selectHTML() {
 $(function() {
     $('#center').mouseup( function() {
         var mytext = selectHTML();
+        console.log(mytext);
         $('.selection').css({"background":"yellow","font-weight":"bold"});
     });
 });
