@@ -22,7 +22,7 @@ $('#clear-all').on('click', function () {
 
 $('#clear-all-kwords').on('click', function (){
     $('input:checkbox').removeAttr('checked');
-    $("span").contents().unwrap();
+    $('.selection').contents().unwrap();
 });
 
 $('#search-bar').keypress(function (e) {
