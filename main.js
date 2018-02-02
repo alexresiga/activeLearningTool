@@ -42,6 +42,8 @@ $('.search-item > i').on('click', function () {
     $(this).parent().remove();
 });
 
+
+
 //pfaaa stie tata
 function selectHTML() {
     
@@ -69,13 +71,6 @@ function selectHTML() {
     }
 }
 
-$(function() {
-    $('#center').mouseup( function() {
-        var mytext = selectHTML();
-        console.log(mytext);
-        $('.selection').css({"background":"yellow","font-weight":"bold"});
-    });
-});
 var documents;
 $.getJSON('https://6c05830f-a7ef-42b2-a90a-0b3c35cef64c.mock.pstmn.io/documents?type=all|incomplete|complete', function (json) {
     documents = json['documents'];
@@ -111,3 +106,21 @@ function load_document(i) {
         }
     });
 }
+
+$(function() {
+    var mytext = "";
+
+    $('#center').mouseup( function() {
+        mytext = selectHTML();
+        $('.selection').css({"background":"yellow","font-weight":"bold"});
+    });
+
+    $('#validate').click( function(){
+        if (mytext != ""){
+        $('#historyList').append('<p>' + mytext + '</p>');
+        index = (index +1) % documents.length;
+        load_document(index);
+        }
+        mytext = "";
+    });
+});
