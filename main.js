@@ -43,8 +43,6 @@ $('.search-item > i').on('click', function () {
 });
 
 
-
-//pfaaa stie tata
 function selectHTML() {
     
     try {
