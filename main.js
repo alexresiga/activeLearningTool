@@ -1,4 +1,4 @@
-$.getJSON('http://wittoswidgets.azurewebsites.net/ActiveLearningToolServices.aspx?method=annotations', function (json) {
+$.getJSON('https://wittoswidgets.azurewebsites.net/ActiveLearningToolServices.aspx?method=annotations', function (json) {
     for (var i = 0; i < json['categories'].length; ++i) {
         var category = json['categories'][i];
         $('#annotations').append('<div class="checkbox"><label style="color:white!important;font-size:15px;"><input type="checkbox" name="optionsCheckboxes" > <span class="checkbox-material"><span class="check" style="width:15px;height:15px;"></span></span>' + category['name'] + '</input></label></div><div style="border-left: 45px solid #1F3249;" class="annotChild" id="' + 'annotation' + i + '"></div>');
@@ -69,7 +69,7 @@ function selectHTML() {
 }
 
 var documents;
-$.getJSON('http://wittoswidgets.azurewebsites.net/ActiveLearningToolServices.aspx?method=documents', function (json) {
+$.getJSON('https://wittoswidgets.azurewebsites.net/ActiveLearningToolServices.aspx?method=documents', function (json) {
     documents = json['documents'];
     load_document(0);
 });
@@ -91,7 +91,7 @@ $('#arrow-right').on('click', function () {
 });
 
 function load_document(i) {
-    $.getJSON('http://wittoswidgets.azurewebsites.net/ActiveLearningToolServices.aspx?method=document&id=' + documents[i]['id'], function (json) {
+    $.getJSON('https://wittoswidgets.azurewebsites.net/ActiveLearningToolServices.aspx?method=document&id=' + documents[i]['id'], function (json) {
         $('#title').html(json['metadata']['title']);
         $('#abstract').html(json['documentAbstract']);
         $('#content').html(json['sections'][0]['content']);
