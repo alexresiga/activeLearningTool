@@ -15,6 +15,7 @@ $.getJSON('https://wittoswidgets.azurewebsites.net/ActiveLearningToolServices.as
     }
     checkBoxes = $('.checkbox');
     ceva = $('input:checkbox');
+    console.log(ceva);
 });
 
 $('.dropdown-menu').children().on('click', function () {
@@ -79,29 +80,33 @@ function selectHTML() {
 var documents;
 var index = 0;
 var counter = 0;
+console.log(ceva);
 $.getJSON('http://localhost:9000/documents?completed=all', function (json) {
     documents = json['documents'];
-    for (var i = 0; i < documents.length; ++i) {
+    for (let i = 0; i < documents.length; ++i) {
         if (documents[i].completed === true) {
-            console.log(documents[i]);
             counter++;
         }
     }
     load_document(0);
-    console.log(documents[0].annotations);
     if ('annotations' in documents[0]) {
         var lista = documents[0].annotations;
-        console.log(lista);
+        console.log("ALT PRINT Documentul cu numarul " + 0 + " are tagurile: " + lista);
+        var altceva = ceva;
         for (var ii = 0; ii < lista.length; ++ii) {
-            for (var j = 0; j < ceva.length; ++j) {
-                if (lista === ceva[j].defaultValue) {
+            console.log(altceva);
+            for (var j = 0; j < altceva.length; ++j) {
+                console.log(ceva[j].defaultValue);
+                if (lista[ii] === ceva[j].defaultValue) {
+                    console.log(lista[ii]);
                     $(ceva[j]).prop('checked', true);
                 }
             }
         }
     }
-
 });
+
+
 $('#all').on('click', function () {
     $.getJSON('http://localhost:9000/documents?completed=all', function (json) {
         documents = json['documents'];
@@ -178,14 +183,12 @@ $('#arrow-right').on('click', function () {
 
 function load_document(i) {
     $.getJSON('http://localhost:9000/documents?id=' + documents[i]['id'], function (json) {
-
-        documents = json['documents'];
         $('#title').html(json['metadata']['title']);
         $('#abstract').html(json['documentAbstract']);
         $('#content').html(json['sections'][0]['content']);
-        $('input:checkbox').removeAttr('checked');
+        //$('input:checkbox').removeAttr('checked');
         $('#authors').empty();
-        for (var i = 0; i < json['metadata']['authors'].length; ++i) {
+        for (let i = 0; i < json['metadata']['authors'].length; ++i) {
             var fullname = json['metadata']['authors'][i]['givenName'] + ' ' + json['metadata']['authors'][i]['surName'];
             $('#authors').append('<div id="author' + i + '" class="author">' + fullname + '</div>');
         }
@@ -195,11 +198,10 @@ function load_document(i) {
         $('#procentage-list').empty();
         $('#procentage-list').append(index + 1 + '/' + documents.length + ' (' + (((index + 1) / documents.length).toFixed(2)) * 100 + '%)');
         $('#bar-list').css('width', (((index + 1) / documents.length).toFixed(2)) * 100 + '%');
-
-        if (documents[i] !== undefined && 'annotations' in documents[i]) {
-
+        console.log(ceva);
+        if (documents[i] !== undefined && 'annotations' in documents[i] && i !==0) {
             var lista = documents[i].annotations;
-            console.log(lista);
+            console.log("Documentul cu numarul " + i + " are tagurile: " + lista);
             for (var ii = 0; ii < lista.length; ++ii) {
                 for (var j = 0; j < ceva.length; ++j) {
                     if (lista[ii] === ceva[j].defaultValue) {
@@ -237,6 +239,7 @@ $(document).ready(function () {
 
             load_document(index);
             counter++;
+            if (counter > documents.length) counter = documents.length;
             $('#procentage').empty();
             $('#procentage').append(counter + '/' + documents.length + ' (' + ((counter / documents.length).toFixed(2)) * 100 + '%)');
             $('#bar').css('width', ((counter / documents.length).toFixed(2)) * 100 + '%');
