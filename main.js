@@ -42,19 +42,22 @@ function sendAnnotations(id, json) {
 }
 
 function loadAnnotations() {
-    getAnnotations().then(function (json) {
-        for (let i = 0; i < json['categories'].length; ++i) {
-            let category = json['categories'][i];
+    return new Promise(function (resolve) {
+        getAnnotations().then(function (json) {
+            for (let i = 0; i < json['categories'].length; ++i) {
+                let category = json['categories'][i];
 
-            $('#annotations').append('<div class="checkbox"><label style="color:white!important;font-size:15px;"><input type="checkbox" name="optionsCheckboxes" class="optionsCheckboxes" value="' + category['name'] + '"><span class="checkbox-material"><span class="check" style="width:15px;height:15px;"></span></span>' + category['name'] + '</input></label></div><div style="border-left: 45px solid #1F3249;" class="annotChild" id="' + 'annotation' + i + '"></div>');
+                $('#annotations').append('<div class="checkbox"><label style="color:white!important;font-size:15px;"><input type="checkbox" name="optionsCheckboxes" class="optionsCheckboxes" value="' + category['name'] + '"><span class="checkbox-material"><span class="check" style="width:15px;height:15px;"></span></span>' + category['name'] + '</input></label></div><div style="border-left: 45px solid #1F3249;" class="annotChild" id="' + 'annotation' + i + '"></div>');
 
-            for (let j = 0; j < category['items'].length; ++j) {
-                let item = category['items'][j];
-                $('#annotation' + i).append('<div class="checkbox " ><label style="color:white!important;font-size:14px;"><input type="checkbox" class="optionsCheckboxes" name="optionsCheckboxes" value="' + item + '"> <span class="checkbox-material"><span class="check " style="width:14px;height:14px;"></span></span>' + item + '</label></div>');
+                for (let j = 0; j < category['items'].length; ++j) {
+                    let item = category['items'][j];
+                    $('#annotation' + i).append('<div class="checkbox " ><label style="color:white!important;font-size:14px;"><input type="checkbox" class="optionsCheckboxes" name="optionsCheckboxes" value="' + item + '"> <span class="checkbox-material"><span class="check " style="width:14px;height:14px;"></span></span>' + item + '</label></div>');
+                }
             }
-        }
 
-        ceva = $('input:checkbox');
+            ceva = $('input:checkbox');
+            resolve();
+        });
     });
 }
 
@@ -259,19 +262,19 @@ $('#validate').on('click', function () {
 });
 
 $(document).ready(function () {
-    loadAnnotations();
+    loadAnnotations().then(function () {
+        $.ajaxSetup({
+            headers: {
+                'Authorization': document.cookie
+            }
+        });
 
-    $.ajaxSetup({
-        headers: {
-            'Authorization': 'eyJhbGciOiJub25lIn0.eyJ1c2VybmFtZSI6Im1hdGVpIiwiZm9sZGVyIjoiWTpcXGJvbnVzXFxiYWNrZW5kMlxcanNvbl9maWxlcyJ9.'
-        }
-    });
+        $('#all').click();
 
-    $('#all').click();
-
-    let myText = "";
-    $('#center').mouseup(function () {
-        myText = selectHTML();
-        $('.selection').css({"background": "yellow", "font-weight": "bold"});
+        let myText = "";
+        $('#center').mouseup(function () {
+            myText = selectHTML();
+            $('.selection').css({"background": "yellow", "font-weight": "bold"});
+        });
     });
 });
