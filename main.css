@@ -1,5 +1,6 @@
 html {
     width: 98.89%;
+    min-width: 1360px;
     height: 90%;
     background-color: #1F3249;
     padding: 0;
