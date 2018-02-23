@@ -47,11 +47,11 @@ function loadAnnotations() {
             for (let i = 0; i < json['categories'].length; ++i) {
                 let category = json['categories'][i];
 
-                $('#annotations').append('<div class="checkbox"><label style="color:white!important;font-size:15px;"><input type="checkbox" name="optionsCheckboxes" class="optionsCheckboxes" value="' + category['name'] + '"><span class="checkbox-material"><span class="check" style="width:15px;height:15px;"></span></span>' + category['name'] + '</input></label></div><div style="border-left: 45px solid #1F3249;" class="annotChild" id="' + 'annotation' + i + '"></div>');
+                $('#annotations').append('<div class="checkbox" style="border-left: 35px solid #1F3249;"><label style="color:white!important;font-size:15px;"><input type="checkbox" id="' + i + '" name="optionsCheckboxes" class="optionsCheckboxes PARENT annotParent' + i + '" value="' + category['name'] + '"><span class="checkbox-material"><span class="check" style="width:15px;height:15px;"></span></span>' + category['name'] + '</input></label></div><div style="border-left: 55px solid #1F3249;" class="annotChild" id="' + 'annotation' + i + '"></div>');
 
                 for (let j = 0; j < category['items'].length; ++j) {
                     let item = category['items'][j];
-                    $('#annotation' + i).append('<div class="checkbox " ><label style="color:white!important;font-size:14px;"><input type="checkbox" class="optionsCheckboxes" name="optionsCheckboxes" value="' + item + '"> <span class="checkbox-material"><span class="check " style="width:14px;height:14px;"></span></span>' + item + '</label></div>');
+                    $('#annotation' + i).append('<div class="checkbox " ><label style="color:white!important;font-size:14px;"><input type="checkbox" id="' + i + '" class="optionsCheckboxes children child' + i + '" name="optionsCheckboxes" value="' + item + '"> <span class="checkbox-material"><span class="check " style="width:14px;height:14px;"></span></span>' + item + '</label></div>');
                 }
             }
 
@@ -64,6 +64,10 @@ function loadAnnotations() {
 function loadDocument(i) {
     getDocument(documentsList[i]['id']).then(function (json) {
         let documentJson = json['document'];
+
+        $('#annotations').css('opacity', '1');
+        $('input:checkbox').unbind("click");
+        $('#relevantInput').prop('checked', true);
 
         $('#title').html(documentJson['metadata']['title']);
         $('#abstract').html(documentJson['documentAbstract']);
@@ -92,11 +96,22 @@ function loadDocument(i) {
                     $(ceva[i]).prop('checked', true);
             }
         }
+
         else if (json['suggestions'].length > 0) {
             for (let i = 0; i < ceva.length; ++i) {
                 if (json['suggestions'].includes(ceva[i].defaultValue))
                     $(ceva[i]).prop('checked', true);
             }
+        }
+
+        if (json['annotations']['relevant'] === "false" && json['annotations']['completed'] === "true") {
+            $('#irrelevantInput').prop('checked', true);
+            $('#annotations').css('opacity', '0.6');
+            $('input:checkbox').removeAttr('checked');
+            $("input:checkbox").click(function () {
+                return false;
+            });
+
         }
     });
 }
@@ -160,12 +175,11 @@ function selectHTML() {
 $('#all').on('click', function () {
     getAllDocuments('all').then(function (json) {
         documentsList = json['documents'];
-
+        counter = 0;
         for (let i = 0; i < documentsList.length; ++i) {
             if (documentsList[i].completed === true)
                 counter++;
         }
-
         loadDocument(0);
     });
 });
@@ -263,23 +277,36 @@ $('#validate').on('click', function () {
         $('#procentage').empty().append(counter + '/' + documentsList.length + ' (' + ((counter / documentsList.length).toFixed(2)) * 100 + '%)');
         $('#bar').css('width', ((counter / documentsList.length).toFixed(2)) * 100 + '%');
     }
+    else if ($('#irrelevantInput').prop('checked')) {
+        sendAnnotations(documentsList[index]['id'], {
+            'completed': 'true',
+            'relevant': 'false',
+            'warning': 'false',
+            'annotations': annotations
+        });
+        $('#historyList').append('<div class="history_element" style="cursor:pointer;" id="' + index + '"> Irrelevant</div>');
+
+        index = (index + 1) % documentsList.length;
+        loadDocument(index);
+
+        counter++;
+        if (counter > documentsList.length)
+            counter = documentsList.length;
+
+        $('#procentage').empty().append(counter + '/' + documentsList.length + ' (' + ((counter / documentsList.length).toFixed(2)) * 100 + '%)');
+        $('#bar').css('width', ((counter / documentsList.length).toFixed(2)) * 100 + '%');
+    }
     else
         alert("Cannot validate without checking any annotations!");
 });
 
 $(document).ready(function () {
-    new Noty({
-        text: 'Some notification text',
-        layout: 'center'
-    }).show();
-
     loadAnnotations().then(function () {
         $.ajaxSetup({
             headers: {
                 'Authorization': document.cookie
             }
         });
-
         $('#all').click();
 
         let myText = "";
@@ -288,4 +315,47 @@ $(document).ready(function () {
             $('.selection').css({"background": "yellow", "font-weight": "bold"});
         });
     });
+});
+
+//irrelevant behaviour
+$('#irrelevantInput').on('click', function () {
+    $('#annotations').css('opacity', '0.6');
+    $('input:checkbox').removeAttr('checked');
+    $("input:checkbox").click(function () {
+        return false;
+    });
+});
+
+//going back to relevant behaviour
+$('#relevantInput').on('click', function () {
+    $('#annotations').css('opacity', '1');
+    $('input:checkbox').unbind("click");
+});
+
+//behaviour of child annotations when parent annotation is clicked
+$('#annotations').on('click', '.PARENT', function () {
+    if ($(this).prop('checked')) {
+        $('input.child' + $(this).attr('id') + ':checkbox').prop('checked', true);
+    }
+    else {
+        $('input.child' + $(this).attr('id') + ':checkbox').removeAttr('checked');
+    }
+
+});
+
+//check parent if any of the children is checked
+$('#annotations').on('click', '.children', function () {
+    $('input.annotParent' + $(this).attr('id') + ':checkbox').prop('checked', true);
+});
+
+//mark document if it contains errors
+$('#warning').on('click', function () {
+    sendAnnotations(documentsList[index]['id'], {
+        'completed': 'false',
+        'relevant': 'false',
+        'warning': 'true',
+        'annotations': []
+    });
+    index = (index + 1) % documentsList.length;
+    loadDocument(index);
 });
