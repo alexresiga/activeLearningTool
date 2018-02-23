@@ -133,7 +133,7 @@
                     <div style="position:relative; width:28%; float: left;text-align: center;">
                         <img class="image" id="validate" src="assets/img/bottom_check.png"
                              style="position:relative;top:10px;margin-left:1px;">
-                        <img class="image" src="assets/img/bottom_exclamation.png"
+                        <img class="image" id="warning" src="assets/img/bottom_exclamation.png"
                              style="position:relative;top:10px;margin-left:25px;">
                     </div>
                     <div style="position:relative; width:41%; float:left;text-align: center;">
@@ -159,14 +159,14 @@
         </div>
         <div class="radio">
             <label id="irrelevant">
-                <input type="radio" name="optionsRadios">
-                Irrelevant
+                <input type="radio" id="irrelevantInput" name="optionsRadios">
+                <div style="background-color: #962d07;color: #ffffff; border-radius: 4px;padding: 3px;">Irrelevant</div>
             </label>
         </div>
         <div class="radio">
             <label id="relevant">
-                <input type="radio" name="optionsRadios" checked="true">
-                Relevant
+                <input type="radio" id="relevantInput" name="optionsRadios" checked="true">
+                <div style="background-color: green;color: #ffffff; border-radius: 4px;padding: 3px;">Relevant</div>
             </label>
         </div>
         <div id="annotations" style="overflow:auto;height: 81%;"></div>
