@@ -1,7 +1,7 @@
-GET_ALL_DOCUMENTS = 'http://localhost:9000/allDocuments';
-GET_DOCUMENT = 'http://localhost:9000/document';
-GET_ANNOTATIONS = 'https://wittoswidgets.azurewebsites.net/ActiveLearningToolServices.aspx?method=annotations';
-POST_DOCUMENT = 'http://localhost:9000/document';
+GET_ALL_DOCUMENTS = 'http://67.205.179.173:9000/allDocuments';
+GET_DOCUMENT = 'http://67.205.179.173:9000/document';
+GET_ANNOTATIONS = 'http://67.205.179.173:9000/annotations';
+POST_DOCUMENT = 'http://67.205.179.173:9000/document';
 
 
 let ceva = [];
@@ -301,12 +301,13 @@ $('#validate').on('click', function () {
 });
 
 $(document).ready(function () {
+    $.ajaxSetup({
+        headers: {
+            'Authorization': document.cookie
+        }
+    });
+
     loadAnnotations().then(function () {
-        $.ajaxSetup({
-            headers: {
-                'Authorization': document.cookie
-            }
-        });
         $('#all').click();
 
         let myText = "";
