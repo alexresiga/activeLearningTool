@@ -92,6 +92,12 @@ function loadDocument(i) {
                     $(ceva[i]).prop('checked', true);
             }
         }
+        else if (json['suggestions'].length > 0) {
+            for (let i = 0; i < ceva.length; ++i) {
+                if (json['suggestions'].includes(ceva[i].defaultValue))
+                    $(ceva[i]).prop('checked', true);
+            }
+        }
     });
 }
 
@@ -262,6 +268,11 @@ $('#validate').on('click', function () {
 });
 
 $(document).ready(function () {
+    new Noty({
+        text: 'Some notification text',
+        layout: 'center'
+    }).show();
+
     loadAnnotations().then(function () {
         $.ajaxSetup({
             headers: {
