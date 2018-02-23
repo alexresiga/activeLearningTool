@@ -1,26 +1,121 @@
-var checkBoxes = [];
-var annotations = [];
-var ceva = [];
-$.getJSON('https://wittoswidgets.azurewebsites.net/ActiveLearningToolServices.aspx?method=annotations', function (json) {
-    for (var i = 0; i < json['categories'].length; ++i) {
-        var category = json['categories'][i];
+GET_ALL_DOCUMENTS = 'http://localhost:9000/allDocuments';
+GET_DOCUMENT = 'http://localhost:9000/document';
+GET_ANNOTATIONS = 'https://wittoswidgets.azurewebsites.net/ActiveLearningToolServices.aspx?method=annotations';
+POST_DOCUMENT = 'http://localhost:9000/document';
 
-        $('#annotations').append('<div class="checkbox"><label style="color:white!important;font-size:15px;"><input type="checkbox" name="optionsCheckboxes" class="optionsCheckboxes" value="' + category['name'] + '"><span class="checkbox-material"><span class="check" style="width:15px;height:15px;"></span></span>' + category['name'] + '</input></label></div><div style="border-left: 45px solid #1F3249;" class="annotChild" id="' + 'annotation' + i + '"></div>');
 
-        for (var j = 0; j < category['items'].length; ++j) {
-            var item = category['items'][j];
+let ceva = [];
+let documentsList = [];
+let index = 0;
+let counter = 0;
 
-            $('#annotation' + i).append('<div class="checkbox " ><label style="color:white!important;font-size:14px;"><input type="checkbox" class="optionsCheckboxes" name="optionsCheckboxes" value="' + item + '"> <span class="checkbox-material"><span class="check " style="width:14px;height:14px;"></span></span>' + item + '</label></div>');
+function getAllDocuments(completedType) {
+    return new Promise(function (resolve) {
+        $.getJSON(GET_ALL_DOCUMENTS + '?completed=' + completedType, function (json) {
+            resolve(json);
+        });
+    });
+}
+
+function getDocument(id) {
+    return new Promise(function (resolve) {
+        $.getJSON(GET_DOCUMENT + '?id=' + id, function (json) {
+            resolve(json);
+        });
+    });
+}
+
+function getAnnotations() {
+    return new Promise(function (resolve) {
+        $.getJSON(GET_ANNOTATIONS, function (json) {
+            resolve(json);
+        });
+    });
+}
+
+function sendAnnotations(id, json) {
+    $.ajax(POST_DOCUMENT + '?id=' + id, {
+        data: JSON.stringify(json),
+        contentType: 'application/json',
+        type: 'POST'
+    });
+}
+
+function loadAnnotations() {
+    return new Promise(function (resolve) {
+        getAnnotations().then(function (json) {
+            for (let i = 0; i < json['categories'].length; ++i) {
+                let category = json['categories'][i];
+
+                $('#annotations').append('<div class="checkbox" style="border-left: 35px solid #1F3249;"><label style="color:white!important;font-size:15px;"><input type="checkbox" id="' + i + '" name="optionsCheckboxes" class="optionsCheckboxes PARENT annotParent' + i + '" value="' + category['name'] + '"><span class="checkbox-material"><span class="check" style="width:15px;height:15px;"></span></span>' + category['name'] + '</input></label></div><div style="border-left: 55px solid #1F3249;" class="annotChild" id="' + 'annotation' + i + '"></div>');
+
+                for (let j = 0; j < category['items'].length; ++j) {
+                    let item = category['items'][j];
+                    $('#annotation' + i).append('<div class="checkbox " ><label style="color:white!important;font-size:14px;"><input type="checkbox" id="' + i + '" class="optionsCheckboxes children child' + i + '" name="optionsCheckboxes" value="' + item + '"> <span class="checkbox-material"><span class="check " style="width:14px;height:14px;"></span></span>' + item + '</label></div>');
+                }
+            }
+            ceva = $('input:checkbox');
+            resolve();
+        });
+    });
+}
+
+function loadDocument(i) {
+    getDocument(documentsList[i]['id']).then(function (json) {
+        let documentJson = json['document'];
+        $('#annotations').css('opacity', '1');
+        $('input:checkbox').unbind("click");
+        $('#relevantInput').prop('checked', true);
+        $('#title').html(documentJson['metadata']['title']);
+        $('#abstract').html(documentJson['documentAbstract']);
+        $('#content').html(documentJson['sections'][0]['content']);
+        $('#authors').empty();
+
+        for (let i = 0; i < documentJson['metadata']['authors'].length; ++i) {
+            let fullName = documentJson['metadata']['authors'][i]['givenName'] + ' ' + documentJson['metadata']['authors'][i]['surName'];
+            $('#authors').append('<div id="author' + i + '" class="author">' + fullName + '</div>');
         }
-    }
-    checkBoxes = $('.checkbox');
-    ceva = $('input:checkbox');
-    console.log(ceva);
-});
+
+        $('#procentage').empty().append(counter + '/' + documentsList.length + ' (' + ((counter / documentsList.length).toFixed(2)) * 100 + '%)');
+        $('#bar').css('width', (((counter / documentsList.length).toFixed(2)) * 100 + '%'));
+
+        $('#procentage-list').empty().append(index + 1 + '/' + documentsList.length + ' (' + (((index + 1) / documentsList.length).toFixed(2)) * 100 + '%)');
+        $('#bar-list').css('width', (((index + 1) / documentsList.length).toFixed(2)) * 100 + '%');
+
+        $('input:checkbox').removeAttr('checked');
+
+        console.log(json);
+        if (!$.isEmptyObject(json['annotations'])) {
+            let annotations = json['annotations']['annotations'];
+            console.log("Documentul cu numarul " + i + " are tagurile: " + annotations);
+
+            for (let i = 0; i < ceva.length; ++i) {
+                if (annotations.includes(ceva[i].defaultValue))
+                    $(ceva[i]).prop('checked', true);
+            }
+        }
+
+        else if (json['suggestions'].length > 0) {
+
+            for (let i = 0; i < ceva.length; ++i) {
+                if (json['suggestions'].includes(ceva[i].defaultValue))
+                    $(ceva[i]).prop('checked', true);
+            }
+        }
+        if (json['annotations']['relevant'] === "false" && json['annotations']['completed'] === "true") {
+            $('#irrelevantInput').prop('checked', true);
+            $('#annotations').css('opacity', '0.6');
+            $('input:checkbox').removeAttr('checked');
+            $("input:checkbox").click(function () {
+                return false;
+            });
+
+        }
+    });
+}
 
 $('.dropdown-menu').children().on('click', function () {
-    $('#dropdown').find('a').first().text($(this).text());
-    $('#dropdown').find('a').first().append('<b class="caret"></b>');
+    $('#dropdown').find('a').first().text($(this).text()).append('<b class="caret"></b>');
 });
 
 $('#clear-all').on('click', function () {
@@ -33,7 +128,7 @@ $('#clear-all-kwords').on('click', function () {
 });
 
 $('#search-bar').keypress(function (e) {
-    if (e.which == 13 && $('#search-bar').val() !== '') {
+    if (e.which === 13 && $('#search-bar').val() !== '') {
         $('#search-history').append('<div class="search-item"><i class="fa fa-times" style="color:white;"></i> ' + $('#search-bar').val() + '<br></div>');
         $('#search-bar').val('');
 
@@ -49,20 +144,18 @@ $('.search-item > i').on('click', function () {
     $(this).parent().remove();
 });
 
-
 function selectHTML() {
-
     try {
         if (window.ActiveXObject) {
-            var c = document.selection.createRange();
+            let c = document.selection.createRange();
             return c.htmlText;
         }
-        var w = getSelection().getRangeAt(0);
+        let w = getSelection().getRangeAt(0);
         if (w.startOffset === w.endOffset) {
             return ""
         }
         else {
-            var nNd = document.createElement("span");
+            let nNd = document.createElement("span");
             nNd.setAttribute("class", "selection");
 
             w.surroundContents(nNd);
@@ -77,192 +170,190 @@ function selectHTML() {
     }
 }
 
-var documents;
-var index = 0;
-var counter = 0;
-console.log(ceva);
-$.getJSON('http://localhost:9000/documents?completed=all', function (json) {
-    documents = json['documents'];
-    for (let i = 0; i < documents.length; ++i) {
-        if (documents[i].completed === true) {
-            counter++;
-        }
-    }
-    load_document(0);
-    if ('annotations' in documents[0]) {
-        var lista = documents[0].annotations;
-        console.log("ALT PRINT Documentul cu numarul " + 0 + " are tagurile: " + lista);
-        var altceva = ceva;
-        for (var ii = 0; ii < lista.length; ++ii) {
-            console.log(altceva);
-            for (var j = 0; j < altceva.length; ++j) {
-                console.log(ceva[j].defaultValue);
-                if (lista[ii] === ceva[j].defaultValue) {
-                    console.log(lista[ii]);
-                    $(ceva[j]).prop('checked', true);
-                }
-            }
-        }
-    }
-});
-
-
 $('#all').on('click', function () {
-    $.getJSON('http://localhost:9000/documents?completed=all', function (json) {
-        documents = json['documents'];
-        load_document(0);
-        for (var i = 0; i < documents.length; ++i) {
-            if (documents[i].completed === true) {
-                console.log(documents[i]);
+    getAllDocuments('all').then(function (json) {
+        documentsList = json['documents'];
+        counter = 0;
+        for (let i = 0; i < documentsList.length; ++i) {
+            if (documentsList[i].completed === true)
                 counter++;
-            }
         }
+        loadDocument(0);
     });
 });
+
 $('#complete').on('click', function () {
-    $.getJSON('http://localhost:9000/documents?completed=true', function (json) {
-        documents = json['documents'];
-        if (json['documents'].length === 0) {
-            $('#title').empty();
-            $('#title').append("There are no completed documents yet!");
+    getAllDocuments('true').then(function (json) {
+        documentsList = json['documents'];
+
+        if (documentsList.length === 0) {
+            $('#title').empty().append("There are no completed documents yet!");
             $('#abstract').empty();
             $('#authors').empty();
             $('#content').empty();
             $('#contentHeader').empty();
             $('#abstractHeader').empty();
-
         }
         else {
-            counter = documents.length;
-            load_document(0);
-            $('#procentage').empty();
-            $('#procentage').append(documents.length + '/' + documents.length + ' (' + ((documents.length / documents.length).toFixed(2)) * 100 + '%)');
-            $('#bar').css('width', (((documents.length / documents.length).toFixed(2)) * 100 + '%'));
+            counter = documentsList.length;
+            $('#procentage').empty().append(documentsList.length + '/' + documentsList.length + ' (' + ((documentsList.length / documentsList.length).toFixed(2)) * 100 + '%)');
+            $('#bar').css('width', (((documentsList.length / documentsList.length).toFixed(2)) * 100 + '%'));
+
+            loadDocument(0);
         }
     });
 
 });
 
 $('#incomplete').on('click', function () {
-    $.getJSON('http://localhost:9000/documents?completed=false', function (json) {
-        documents = json['documents'];
-        if (json['documents'].length === 0) {
-            $('#title').empty();
-            $('#title').append("There are no uncompleted documents left!");
+    getAllDocuments('false').then(function (json) {
+        documentsList = json['documents'];
+
+        if (documentsList.length === 0) {
+            $('#title').empty().append("There are no uncompleted documents left!");
             $('#abstract').empty();
             $('#authors').empty();
             $('#content').empty();
             $('#contentHeader').empty();
             $('#abstractHeader').empty();
-
         }
         else {
             counter = 0;
-            $('#procentage').empty();
-            $('#procentage').append(counter + '/' + documents.length + ' (' + ((counter / (documents.length + 1)).toFixed(2)) * 100 + '%)');
-            $('#bar').css('width', (((counter / documents.length).toFixed(2)) * 100 + '%'));
-            load_document(0);
+            $('#procentage').empty().append(counter + '/' + documentsList.length + ' (' + ((counter / (documentsList.length + 1)).toFixed(2)) * 100 + '%)');
+            $('#bar').css('width', (((counter / documentsList.length).toFixed(2)) * 100 + '%'));
+
+            loadDocument(0);
         }
     });
 });
 
 $('#arrow-left').on('click', function () {
     if (index === 0)
-        index = documents.length - 1;
+        index = documentsList.length - 1;
     else
         index = index - 1;
 
-    load_document(index);
+    loadDocument(index);
 });
 
 $('#arrow-right').on('click', function () {
-    index = (index + 1) % documents.length;
+    index = (index + 1) % documentsList.length;
 
-    load_document(index);
-});
-
-function load_document(i) {
-    $.getJSON('http://localhost:9000/documents?id=' + documents[i]['id'], function (json) {
-        $('#title').html(json['metadata']['title']);
-        $('#abstract').html(json['documentAbstract']);
-        $('#content').html(json['sections'][0]['content']);
-        //$('input:checkbox').removeAttr('checked');
-        $('#authors').empty();
-        for (let i = 0; i < json['metadata']['authors'].length; ++i) {
-            var fullname = json['metadata']['authors'][i]['givenName'] + ' ' + json['metadata']['authors'][i]['surName'];
-            $('#authors').append('<div id="author' + i + '" class="author">' + fullname + '</div>');
-        }
-        $('#procentage').empty();
-        $('#procentage').append(counter + '/' + documents.length + ' (' + ((counter / documents.length).toFixed(2)) * 100 + '%)');
-        $('#bar').css('width', (((counter / documents.length).toFixed(2)) * 100 + '%'));
-        $('#procentage-list').empty();
-        $('#procentage-list').append(index + 1 + '/' + documents.length + ' (' + (((index + 1) / documents.length).toFixed(2)) * 100 + '%)');
-        $('#bar-list').css('width', (((index + 1) / documents.length).toFixed(2)) * 100 + '%');
-        console.log(ceva);
-        if (documents[i] !== undefined && 'annotations' in documents[i] && i !==0) {
-            var lista = documents[i].annotations;
-            console.log("Documentul cu numarul " + i + " are tagurile: " + lista);
-            for (var ii = 0; ii < lista.length; ++ii) {
-                for (var j = 0; j < ceva.length; ++j) {
-                    if (lista[ii] === ceva[j].defaultValue) {
-                        $(ceva[j]).prop('checked', true);
-                    }
-                }
-            }
-        }
-
-
-    });
-}
-
-$(document).ready(function () {
-    var mytext = "";
-    $('#center').mouseup(function () {
-        mytext = selectHTML();
-        $('.selection').css({"background": "yellow", "font-weight": "bold"});
-    });
-
-    $('#validate').click(function () {
-        for (var i = 0; i < ceva.length; ++i) {
-            if ($(ceva[i]).prop('checked')) {
-                annotations.push(ceva[i].defaultValue);
-            }
-        }
-        if (annotations.length > 0) {
-            $.ajax('http://localhost:9000/documents?id=' + index, {
-                data: JSON.stringify({'completed': 'true', 'annotations': annotations}),
-                contentType: 'application/json',
-                type: 'POST'
-            });
-            $('#historyList').append('<div class="history_element" style="cursor:pointer;" id="' + index + '">' + annotations.join(', ') + '</div>');
-            index = (index + 1) % documents.length;
-
-            load_document(index);
-            counter++;
-            if (counter > documents.length) counter = documents.length;
-            $('#procentage').empty();
-            $('#procentage').append(counter + '/' + documents.length + ' (' + ((counter / documents.length).toFixed(2)) * 100 + '%)');
-            $('#bar').css('width', ((counter / documents.length).toFixed(2)) * 100 + '%');
-
-            //preparing next document
-            checkBoxes = annotations;
-            annotations = [];
-            $('input:checkbox').removeAttr('checked');
-        }
-        else {
-            alert("Cannot validate without checking any annotations!");
-        }
-    });
+    loadDocument(index);
 });
 
 $('#historyList').on('click', 'div', function () {
     index = parseInt($(this).attr('id'));
-    load_document(index);
-    for (var i = 0; i < checkBoxes.length; ++i) {
-        for (var j = 0; j < ceva.length; ++j) {
-            if (checkBoxes[i] === ceva[j].defaultValue) {
-                $(ceva[j]).prop('checked', true);
-            }
+    loadDocument(index);
+});
+
+$('#validate').on('click', function () {
+    let annotations = [];
+    for (let i = 0; i < ceva.length; ++i) {
+        if ($(ceva[i]).prop('checked')) {
+            annotations.push(ceva[i].defaultValue);
         }
     }
+
+    if (annotations.length > 0) {
+        sendAnnotations(documentsList[index]['id'], {
+            'completed': 'true',
+            'relevant': 'true',
+            'warning': 'false',
+            'annotations': annotations
+        });
+
+        $('#historyList').append('<div class="history_element" style="cursor:pointer;" id="' + index + '">' + annotations.join(', ') + '</div>');
+
+        index = (index + 1) % documentsList.length;
+        loadDocument(index);
+
+        counter++;
+        if (counter > documentsList.length)
+            counter = documentsList.length;
+
+        $('#procentage').empty().append(counter + '/' + documentsList.length + ' (' + ((counter / documentsList.length).toFixed(2)) * 100 + '%)');
+        $('#bar').css('width', ((counter / documentsList.length).toFixed(2)) * 100 + '%');
+    }
+    else if ($('#irrelevantInput').prop('checked')) {
+        sendAnnotations(documentsList[index]['id'], {
+            'completed': 'true',
+            'relevant': 'false',
+            'warning': 'false',
+            'annotations': annotations
+        });
+        $('#historyList').append('<div class="history_element" style="cursor:pointer;" id="' + index + '"> Irrelevant</div>');
+
+        index = (index + 1) % documentsList.length;
+        loadDocument(index);
+
+        counter++;
+        if (counter > documentsList.length)
+            counter = documentsList.length;
+
+        $('#procentage').empty().append(counter + '/' + documentsList.length + ' (' + ((counter / documentsList.length).toFixed(2)) * 100 + '%)');
+        $('#bar').css('width', ((counter / documentsList.length).toFixed(2)) * 100 + '%');
+    }
+    else
+        alert("Cannot validate without checking any annotations!");
+});
+
+$(document).ready(function () {
+    loadAnnotations().then(function () {
+        $.ajaxSetup({
+            headers: {
+                'Authorization': 'eyJhbGciOiJub25lIn0.eyJ1c2VybmFtZSI6ImFsZXgiLCJmb2xkZXIiOiIvL1VzZXJzLy9hbGV4Ly9wbGF5LXNjYWxhLXNlZWQvL2pzb25fZmlsZXMifQ.'
+            }
+        });
+        $('#all').click();
+
+        let myText = "";
+        $('#center').mouseup(function () {
+            myText = selectHTML();
+            $('.selection').css({"background": "yellow", "font-weight": "bold"});
+        });
+    });
+});
+
+//irrelevant behaviour
+$('#irrelevantInput').on('click', function () {
+    $('#annotations').css('opacity', '0.6');
+    $('input:checkbox').removeAttr('checked');
+    $("input:checkbox").click(function () {
+        return false;
+    });
+});
+
+//going back to relevant behaviour
+$('#relevantInput').on('click', function () {
+    $('#annotations').css('opacity', '1');
+    $('input:checkbox').unbind("click");
+});
+
+//behaviour of child annotations when parent annotation is clicked
+$('#annotations').on('click', '.PARENT', function () {
+    if ($(this).prop('checked')) {
+        $('input.child' + $(this).attr('id') + ':checkbox').prop('checked', true);
+    }
+    else {
+        $('input.child' + $(this).attr('id') + ':checkbox').removeAttr('checked');
+    }
+
+});
+
+//check parent if any of the children is checked
+$('#annotations').on('click', '.children', function () {
+    $('input.annotParent' + $(this).attr('id') + ':checkbox').prop('checked', true);
+});
+
+//mark document if it contains errors
+$('#warning').on('click', function () {
+    sendAnnotations(documentsList[index]['id'], {
+        'completed': 'false',
+        'relevant': 'false',
+        'warning': 'true',
+        'annotations': []
+    });
+    index = (index + 1) % documentsList.length;
+    loadDocument(index);
 });
