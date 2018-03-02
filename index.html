@@ -14,7 +14,7 @@
     <!--     Fonts and icons     -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700"/>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css"/>
+    <link href="https://use.fontawesome.com/releases/v5.0.4/css/all.css" rel="stylesheet">
     <!-- CSS Files -->
     <link href="assets/css/bootstrap.min.css" rel="stylesheet"/>
     <link href="assets/css/material-kit.css" rel="stylesheet"/>
@@ -62,7 +62,7 @@
             <label class="control-label" style="color:white!important">Search</label>
             <input id="search-bar" name="p" type="search" class="form-control" style="color:white!important">
         </div>
-        <div>
+        <div style="overflow:auto;height:15%;margin-top: 5px;">
             <div style="white-space:nowrap;">
                 <div class="content" style="display:inline-block;">Current search</div>
                 <button id="clear-all" class="content text-center"
@@ -70,11 +70,9 @@
                     <i class="fa fa-times" style="color:white;"></i> clear all
                 </button>
                 <br></div>
-            <div id="search-history">
-                <div class="search-item"><i class="fa fa-times" style="color:white;"></i> tag: corn <br></div>
-                <div class="search-item"><i class="fa fa-times" style="color:white;"></i> "nutrient management"<br>
-                </div>
-                <div class="search-item"><i class="fa fa-times" style="color:white;"></i> notag: orchard<br></div>
+            <div id="search-history" >
+
+                <div class="search-item"></div>
             </div>
         </div>
         <div id="statistics" style="margin-bottom: 10px;">
