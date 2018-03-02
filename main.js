@@ -73,7 +73,7 @@ function loadDocument(i) {
         $('#abstract').html(documentJson['documentAbstract']);
         $('#content').html(documentJson['sections'][0]['content']);
         $('#authors').empty();
-
+        $('#center').css('border', 'none');
         for (let i = 0; i < documentJson['metadata']['authors'].length; ++i) {
             let fullName = documentJson['metadata']['authors'][i]['givenName'] + ' ' + documentJson['metadata']['authors'][i]['surName'];
             $('#authors').append('<div id="author' + i + '" class="author">' + fullName + '</div>');
@@ -89,12 +89,13 @@ function loadDocument(i) {
 
         if (!$.isEmptyObject(json['annotations'])) {
             let annotations = json['annotations']['annotations'];
-            console.log("Documentul cu numarul " + i + " are tagurile: " + annotations);
 
             for (let i = 0; i < ceva.length; ++i) {
                 if (annotations.includes(ceva[i].defaultValue))
                     $(ceva[i]).prop('checked', true);
             }
+            if (annotations.length > 0)
+            $('#center').css('border', '5px solid green');
         }
 
         else if (json['suggestions'].length > 0) {
@@ -102,6 +103,7 @@ function loadDocument(i) {
                 if (json['suggestions'].includes(ceva[i].defaultValue))
                     $(ceva[i]).prop('checked', true);
             }
+
         }
 
         if (json['annotations']['relevant'] === "false" && json['annotations']['completed'] === "true") {
@@ -111,7 +113,7 @@ function loadDocument(i) {
             $("input:checkbox").click(function () {
                 return false;
             });
-
+            $('#center').css('border', '5px solid #942e12');
         }
     });
 }
@@ -149,7 +151,12 @@ $('#log-out').on('click', function () {
 
 $('#search-bar').keypress(function (e) {
     if (e.which === 13 && $('#search-bar').val() !== '') {
-        $('#search-history').append('<div class="search-item"><i class="fa fa-times" style="color:white;"></i> ' + $('#search-bar').val() + '<br></div>');
+        //console.log($('$('#center').text():contains($('#search-bar').val())'));
+        let search = $('#search-bar').val();
+        let text = $('#center').text();
+        let idk = new RegExp(search.toString(), "i");
+        console.log(text);
+        $('#search-history').prepend('<div class="search-item"><i class="fa fa-times" style="color:white;"></i> ' + $('#search-bar').val() + '<br></div>');
         $('#search-bar').val('');
 
         $('.search-item > i').on('click', function () {
@@ -283,7 +290,7 @@ $('#validate').on('click', function () {
             'annotations': annotations
         });
 
-        $('#historyList').append('<div class="history_element" style="cursor:pointer;" id="' + index + '">' + annotations.join(', ') + '</div>');
+        $('#historyList').append('<div class="history_element" style="cursor:pointer;" id="' + index + '"><div style="color:green;float:left;margin-right:2px;"><i class="fa fa-circle fa-sm"></i></div>'+ annotations.join(', ') + '</div>');
 
         index = (index + 1) % documentsList.length;
         loadDocument(index);
@@ -302,7 +309,7 @@ $('#validate').on('click', function () {
             'warning': 'false',
             'annotations': annotations
         });
-        $('#historyList').append('<div class="history_element" style="cursor:pointer;" id="' + index + '"> Irrelevant</div>');
+        $('#historyList').append('<div class="history_element" style="cursor:pointer;" id="' + index + '"><div style="color:#942e12;float:left;margin-right:2px;"><i class="fa fa-circle fa-sm"></i></div> Irrelevant</div>');
 
         index = (index + 1) % documentsList.length;
         loadDocument(index);
