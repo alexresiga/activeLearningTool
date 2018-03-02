@@ -1,7 +1,7 @@
-GET_ALL_DOCUMENTS = 'http://localhost:9000/allDocuments';
-GET_DOCUMENT = 'http://localhost:9000/document';
-GET_ANNOTATIONS = 'https://wittoswidgets.azurewebsites.net/ActiveLearningToolServices.aspx?method=annotations';
-POST_DOCUMENT = 'http://localhost:9000/document';
+GET_ALL_DOCUMENTS = 'http://67.205.179.173:9000/allDocuments';
+GET_DOCUMENT = 'http://67.205.179.173:9000/document';
+GET_ANNOTATIONS = 'http://67.205.179.173:9000/annotations';
+POST_DOCUMENT = 'http://67.205.179.173:9000/document';
 
 
 let ceva = [];
@@ -54,6 +54,7 @@ function loadAnnotations() {
                     $('#annotation' + i).append('<div class="checkbox " ><label style="color:white!important;font-size:14px;"><input type="checkbox" id="' + i + '" class="optionsCheckboxes children child' + i + '" name="optionsCheckboxes" value="' + item + '"> <span class="checkbox-material"><span class="check " style="width:14px;height:14px;"></span></span>' + item + '</label></div>');
                 }
             }
+
             ceva = $('input:checkbox');
             resolve();
         });
@@ -63,9 +64,11 @@ function loadAnnotations() {
 function loadDocument(i) {
     getDocument(documentsList[i]['id']).then(function (json) {
         let documentJson = json['document'];
+
         $('#annotations').css('opacity', '1');
         $('input:checkbox').unbind("click");
         $('#relevantInput').prop('checked', true);
+
         $('#title').html(documentJson['metadata']['title']);
         $('#abstract').html(documentJson['documentAbstract']);
         $('#content').html(documentJson['sections'][0]['content']);
@@ -96,13 +99,13 @@ function loadDocument(i) {
         }
 
         else if (json['suggestions'].length > 0) {
-
             for (let i = 0; i < ceva.length; ++i) {
                 if (json['suggestions'].includes(ceva[i].defaultValue))
                     $(ceva[i]).prop('checked', true);
             }
 
         }
+
         if (json['annotations']['relevant'] === "false" && json['annotations']['completed'] === "true") {
             $('#irrelevantInput').prop('checked', true);
             $('#annotations').css('opacity', '0.6');
@@ -305,12 +308,13 @@ $('#validate').on('click', function () {
 });
 
 $(document).ready(function () {
+    $.ajaxSetup({
+        headers: {
+            'Authorization': document.cookie
+        }
+    });
+
     loadAnnotations().then(function () {
-        $.ajaxSetup({
-            headers: {
-                'Authorization': 'eyJhbGciOiJub25lIn0.eyJ1c2VybmFtZSI6ImFsZXgiLCJmb2xkZXIiOiIvL1VzZXJzLy9hbGV4Ly9wbGF5LXNjYWxhLXNlZWQvL2pzb25fZmlsZXMifQ.'
-            }
-        });
         $('#all').click();
 
         let myText = "";
