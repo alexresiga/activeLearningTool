@@ -129,6 +129,24 @@ $('#clear-all-kwords').on('click', function () {
     $('.selection').contents().unwrap();
 });
 
+$('#default-labels').on('click', function () {
+    $('input:checkbox').removeAttr('checked');
+
+    getDocument(documentsList[index]['id']).then(function (json) {
+        if (json['suggestions'].length > 0) {
+            for (let i = 0; i < ceva.length; ++i) {
+                if (json['suggestions'].includes(ceva[i].defaultValue))
+                    $(ceva[i]).prop('checked', true);
+            }
+        }
+    });
+});
+
+$('#log-out').on('click', function () {
+    document.cookie = '';
+    window.location.href = 'login.html';
+});
+
 $('#search-bar').keypress(function (e) {
     if (e.which === 13 && $('#search-bar').val() !== '') {
         $('#search-history').append('<div class="search-item"><i class="fa fa-times" style="color:white;"></i> ' + $('#search-bar').val() + '<br></div>');

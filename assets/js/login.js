@@ -19,3 +19,9 @@ function login() {
         }
     });
 }
+
+$('input[name=password]').keyup(function(event) {
+    if (event.keyCode === 13) {
+        $("#login-button").click();
+    }
+});
