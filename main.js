@@ -3,11 +3,17 @@ GET_DOCUMENT = 'http://67.205.179.173:9000/document';
 GET_ANNOTATIONS = 'http://67.205.179.173:9000/annotations';
 POST_DOCUMENT = 'http://67.205.179.173:9000/document';
 
+//LOCAL DOCUMENTS; COMMENT IT OUT FOR SERVER ONES
+//GET_ALL_DOCUMENTS = 'http://localhost:9000/allDocuments';
+//GET_DOCUMENT = 'http://localhost:9000/document';
+//GET_ANNOTATIONS = 'http://localhost:9000/annotations';
+//POST_DOCUMENT = 'http://localhost:9000/document';
 
 let ceva = [];
 let documentsList = [];
 let index = 0;
 let counter = 0;
+let validatedID = [];
 
 function getAllDocuments(completedType) {
     return new Promise(function (resolve) {
@@ -64,11 +70,12 @@ function loadAnnotations() {
 function loadDocument(i) {
     getDocument(documentsList[i]['id']).then(function (json) {
         let documentJson = json['document'];
-
+        console.log(documentsList[i]['id']);
         $('#annotations').css('opacity', '1');
         $('input:checkbox').unbind("click");
-        $('#relevantInput').prop('checked', true);
-
+        $('#relevantInput').prop('checked', false);
+        $('#irrelevantInput').prop('checked', false);
+        $('#documentName').html("Document: "+documentsList[i]['name']);
         $('#title').html(documentJson['metadata']['title']);
         $('#abstract').html(documentJson['documentAbstract']);
         $('#content').html(documentJson['sections'][0]['content']);
@@ -89,7 +96,7 @@ function loadDocument(i) {
 
         if (!$.isEmptyObject(json['annotations'])) {
             let annotations = json['annotations']['annotations'];
-
+            $('#relevantInput').prop('checked', true);
             for (let i = 0; i < ceva.length; ++i) {
                 if (annotations.includes(ceva[i].defaultValue))
                     $(ceva[i]).prop('checked', true);
@@ -129,6 +136,7 @@ $('#clear-all').on('click', function () {
 $('#clear-all-kwords').on('click', function () {
     $('input:checkbox').removeAttr('checked');
     $('.selection').contents().unwrap();
+    $('#relevantInput').prop("checked", false);
 });
 
 $('#default-labels').on('click', function () {
@@ -154,8 +162,8 @@ $('#search-bar').keypress(function (e) {
         //console.log($('$('#center').text():contains($('#search-bar').val())'));
         let search = $('#search-bar').val();
         let text = $('#center').text();
-        let idk = new RegExp(search.toString(), "i");
-        console.log(text);
+        let idk = new RegExp(search.toString(), "\i");
+        console.log(text.search(idk));
         $('#search-history').prepend('<div class="search-item"><i class="fa fa-times" style="color:white;"></i> ' + $('#search-bar').val() + '<br></div>');
         $('#search-bar').val('');
 
@@ -199,6 +207,7 @@ function selectHTML() {
 
 $('#all').on('click', function () {
     getAllDocuments('all').then(function (json) {
+        $('#center').css('border', 'none');
         documentsList = json['documents'];
         counter = 0;
         for (let i = 0; i < documentsList.length; ++i) {
@@ -220,6 +229,7 @@ $('#complete').on('click', function () {
             $('#content').empty();
             $('#contentHeader').empty();
             $('#abstractHeader').empty();
+            $('#center').css('border', 'none');
         }
         else {
             counter = documentsList.length;
@@ -243,6 +253,7 @@ $('#incomplete').on('click', function () {
             $('#content').empty();
             $('#contentHeader').empty();
             $('#abstractHeader').empty();
+            $('#center').css('border', 'none');
         }
         else {
             counter = 0;
@@ -290,15 +301,20 @@ $('#validate').on('click', function () {
             'annotations': annotations
         });
 
+        alertify.notify("Validated Document", 'success', 2);
         $('#historyList').append('<div class="history_element" style="cursor:pointer;" id="' + index + '"><div style="color:green;float:left;margin-right:2px;"><i class="fa fa-circle fa-sm"></i></div>'+ annotations.join(', ') + '</div>');
 
         index = (index + 1) % documentsList.length;
         loadDocument(index);
 
-        counter++;
-        if (counter > documentsList.length)
-            counter = documentsList.length;
-
+        if (!(validatedID.includes(documentsList[index]['id']))) {
+            counter++;
+            if (counter > documentsList.length)
+                counter = documentsList.length;
+        }
+        else {
+            validatedID.append(documentsList[index]['id']);
+        }
         $('#procentage').empty().append(counter + '/' + documentsList.length + ' (' + ((counter / documentsList.length).toFixed(2)) * 100 + '%)');
         $('#bar').css('width', ((counter / documentsList.length).toFixed(2)) * 100 + '%');
     }
@@ -309,6 +325,8 @@ $('#validate').on('click', function () {
             'warning': 'false',
             'annotations': annotations
         });
+        alertify.notify("Irrelevant Document", 'error', 2);
+
         $('#historyList').append('<div class="history_element" style="cursor:pointer;" id="' + index + '"><div style="color:#942e12;float:left;margin-right:2px;"><i class="fa fa-circle fa-sm"></i></div> Irrelevant</div>');
 
         index = (index + 1) % documentsList.length;
@@ -322,24 +340,29 @@ $('#validate').on('click', function () {
         $('#bar').css('width', ((counter / documentsList.length).toFixed(2)) * 100 + '%');
     }
     else
-        alert("Cannot validate without checking any annotations!");
+        alertify.notify("Cannot validate without checking any annotations!", 'message', 3);
 });
 
 $(document).ready(function () {
+    if (document.cookie === "")
+    {
+        window.location.href = "login.html";
+    }
     $.ajaxSetup({
         headers: {
             'Authorization': document.cookie
         }
     });
-
+    alertify.defaults.notifier.position = 'top-center';
     loadAnnotations().then(function () {
         $('#all').click();
 
-        let myText = "";
-        $('#center').mouseup(function () {
-            myText = selectHTML();
-            $('.selection').css({"background": "yellow", "font-weight": "bold"});
-        });
+        //TO BE UNCOMMENTED FOR HIGHLIGHTING FEATURE
+        //let myText = "";
+        //$('#center').mouseup(function () {
+        //    myText = selectHTML();
+        //    $('.selection').css({"background": "yellow", "font-weight": "bold"});
+        //});
     });
 });
 
@@ -372,6 +395,7 @@ $('#annotations').on('click', '.PARENT', function () {
 //check parent if any of the children is checked
 $('#annotations').on('click', '.children', function () {
     $('input.annotParent' + $(this).attr('id') + ':checkbox').prop('checked', true);
+    $('#relevantInput').prop("checked", true);
 });
 
 //mark document if it contains errors
