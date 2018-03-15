@@ -1,8 +1,13 @@
 function login() {
     console.log('login');
     $.ajax({
+<<<<<<< HEAD
         // url: 'http://67.205.179.173:9000/login',
         url: 'http://localhost:9000/login',
+=======
+        url: 'http://67.205.179.173:9000/login',
+        //url: 'http://localhost:9000/login',
+>>>>>>> e468af21a6cab90912b4589fa032a5fa20197407
         data: {
             username: $('input[name=user]').val(),
             password: $('input[name=password]').val()

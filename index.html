@@ -30,29 +30,52 @@
     </script>
 </head>
 <body>
+<!-- Modal -->
+<div class="modal fade" id="HelpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header content text-center">
+                <h5> Keyboard Shortcuts</h5>
+            </div>
+            <div class="modal-body content" style="text-align: left;padding-left: 35%;">
+                <p> ► &nbsp;&nbsp; Load next document </p>
+                <p> ◄ &nbsp;&nbsp; Load previous document</p>
+                <p> V &nbsp;&nbsp; Validate current document</p>
+                <p> W &nbsp;&nbsp; Mark current item for review </p>
+            </div>
+            <div class="content text-center">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="row">
     <div id="left" class="col-xs-3">
-        <div class="content" id="toolname">Active Learning Tool</div>
-
+        <div class="content" id="toolname">
+            Active Learning Tool&nbsp;<i class="fa fa-question-circle fa-sm"></i>
+        </div>
+        <i class="fa fa-user"></i><span id="user"></span>
         <button id="log-out"
-                style="font-size:0.9em ;border: 3px solid #2B7CC9;border-radius:7px;background-color: #2B7CC9;margin:5px">
-            <i class="fa fa-times" style="color:white;"></i> log out
+                style="font-size:0.9em ;border: 1px solid #2B7CC9;border-radius:5px;background-color: #2B7CC9;margin-bottom:5px;">
+            <i class="fa fa-sign-out-alt" style="color:white;"></i> log out
         </button>
+
 
         <div class="parent content">
             <div id="task">Task</div>
             <div id="dropdown" class="dropdown">
                 <a href="#" id="dropdown-button" class="btn btn-simple dropdown-toggle" data-toggle="dropdown"
-                   style="padding:12px 20px!important;">
+                   style="padding:7px 10px!important;">
                     Multi-label classification
                     <b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu">
                     <li><a href="#">Multi-label classification </a></li>
-                    <li class="divider"></li>
-                    <li><a href="#">Named entity annotation </a></li>
-                    <li class="divider"></li>
-                    <li><a href="#">Relation annotation </a></li>
+                    <!--<li class="divider"></li>                        -->
+                    <!--<li><a href="#">Named entity annotation </a></li>-->
+                    <!--<li class="divider"></li>                        -->
+                    <!--<li><a href="#">Relation annotation </a></li>    -->
                 </ul>
             </div>
         </div>
@@ -68,7 +91,7 @@
             <label class="control-label" style="color:white!important">Search</label>
             <input id="search-bar" name="p" type="search" class="form-control" style="color:white!important">
         </div>
-        <div style="overflow:auto;height:10%;margin-top: 5px;">
+        <div style="overflow:auto;height:15%;margin-top: 5px;">
             <div style="white-space:nowrap;">
                 <div class="content" style="display:inline-block;">Current search</div>
                 <button id="clear-all" class="content text-center"
