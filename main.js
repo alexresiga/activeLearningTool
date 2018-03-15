@@ -1,13 +1,13 @@
-// GET_ALL_DOCUMENTS = 'http://67.205.179.173:9000/allDocuments';
-// GET_DOCUMENT = 'http://67.205.179.173:9000/document';
-// GET_ANNOTATIONS = 'http://67.205.179.173:9000/annotations';
-// POST_DOCUMENT = 'http://67.205.179.173:9000/document';
+ GET_ALL_DOCUMENTS = 'http://67.205.179.173:9000/allDocuments';
+ GET_DOCUMENT = 'http://67.205.179.173:9000/document';
+ GET_ANNOTATIONS = 'http://67.205.179.173:9000/annotations';
+ POST_DOCUMENT = 'http://67.205.179.173:9000/document';
 
 //LOCAL DOCUMENTS; COMMENT IT OUT FOR SERVER ONES
-GET_ALL_DOCUMENTS = 'http://localhost:9000/allDocuments';
-GET_DOCUMENT = 'http://localhost:9000/document';
-GET_ANNOTATIONS = 'http://localhost:9000/annotations';
-POST_DOCUMENT = 'http://localhost:9000/document';
+// GET_ALL_DOCUMENTS = 'http://localhost:9000/allDocuments';
+// GET_DOCUMENT = 'http://localhost:9000/document';
+// GET_ANNOTATIONS = 'http://localhost:9000/annotations';
+// POST_DOCUMENT = 'http://localhost:9000/document';
 
 let ceva = [];
 let documentsList = [];
@@ -450,3 +450,7 @@ function highlightSubstring(index, length) {
 
     $('#center').html(str);
 }
+
+$('.fa-question-circle').on('click', function () {
+    $('#HelpModal').modal();
+});
