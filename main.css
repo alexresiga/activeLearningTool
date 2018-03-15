@@ -4,11 +4,12 @@ html {
     height: 90%;
     background-color: #1F3249;
     padding: 0;
-    margin:0;
-    
+    margin: 0;
+
 }
-::-webkit-scrollbar { 
-    display: none; 
+
+::-webkit-scrollbar {
+    display: none;
 }
 
 html, body, .col-md-12, .row {
@@ -58,9 +59,9 @@ html, body, .col-md-12, .row {
     padding: 12 15px;
 }
 
-#dropdown-button{
+#dropdown-button {
     background-color: white;
-    color: #1F3249!important;
+    color: #1F3249 !important;
     border-radius: 5px;
 }
 
@@ -74,9 +75,9 @@ html, body, .col-md-12, .row {
 }
 
 #left > #buttons .active {
-    color: gray!important;
-    
-    background-color: white!important;
+    color: gray !important;
+
+    background-color: white !important;
 
 }
 
@@ -115,7 +116,7 @@ html, body, .col-md-12, .row {
 #center {
     background-color: white;
     height: 90%;
-    padding: 35px!important;
+    padding: 35px !important;
     overflow: auto;
     font-size: 1.2em;
     color: gray;
@@ -124,8 +125,9 @@ html, body, .col-md-12, .row {
 #center > #title {
     font-size: 1.2em;
     color: gray;
-    
+
 }
+
 .author {
     display: inline-block;
     margin: 20px;
@@ -147,13 +149,15 @@ html, body, .col-md-12, .row {
     color: white;
 
 }
+
 #right > .title-right {
     margin-top: 15px;
     margin-bottom: 10px;
 }
+
 div#annotations {
     color: white;
-} 
+}
 
 #relevant {
     color: green;
@@ -164,10 +168,14 @@ div#annotations {
 }
 
 .checkbox .checkbox-material .check:before {
-    margin-top: -5px!important;
-    margin-left: 5px!important;
+    margin-top: -5px !important;
+    margin-left: 5px !important;
 }
 
 .image:active {
-transform: translateY(4px);
+    transform: translateY(4px);
+}
+
+.highlighted {
+    background-color: lightgreen;
 }
