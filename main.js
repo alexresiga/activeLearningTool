@@ -12,7 +12,7 @@ POST_DOCUMENT = 'http://localhost:9000/document';
 let ceva = [];
 let documentsList = [];
 let index = 0;
-let counter = 0; // R.I.P. :(
+let counter = 0; // Gone but not forgotten... R.I.P.
 let validatedID = [];
 
 function getAllDocuments(completedType) {
@@ -92,12 +92,12 @@ function loadAnnotations() {
 }
 
 function refreshPercentages() {
-    let p = (documentsList.length > 0) ? (Number((validatedID.length / documentsList.length * 100).toFixed(2))) : 0;
+    let p = (documentsList.length > 0) ? (Number((validatedID.length / documentsList.length * 100).toFixed(0))) : 0;
     $('#procentage').empty().append(validatedID.length + '/' + documentsList.length + ' (' + p + '%)');
     $('#bar').css('width', p + '%');
 
     let currentIndex = (documentsList.length > 0) ? (index + 1) : 0;
-    p = (documentsList.length > 0) ? (Number((currentIndex / documentsList.length * 100).toFixed(2))) : 0;
+    p = (documentsList.length > 0) ? (Number((currentIndex / documentsList.length * 100).toFixed(0))) : 0;
     $('#procentage-list').empty().append(currentIndex + '/' + documentsList.length + ' (' + p + '%)');
     $('#bar-list').css('width', p + '%');
 }
@@ -157,13 +157,13 @@ function loadDocument(i) {
         // TODO: make search case-insensitive
 
         getKeywords().forEach(function (keyword) {
-            let centerHtml = $('#center').html();
+            let centerHtml = $('#center').html().toLowerCase();
             let highlightIndexes = [];
-            let htmlIndex = centerHtml.indexOf(keyword);
+            let htmlIndex = centerHtml.indexOf(keyword.toLowerCase());
 
             while (htmlIndex !== -1 && htmlIndex < centerHtml.length) {
                 highlightIndexes.push(htmlIndex);
-                htmlIndex = centerHtml.indexOf(keyword, htmlIndex + keyword.length);
+                htmlIndex = centerHtml.indexOf(keyword.toLowerCase(), htmlIndex + keyword.length);
             }
 
             for (let i = highlightIndexes.length - 1; i >= 0; i--)
@@ -190,6 +190,7 @@ $('#clear-all-kwords').on('click', function () {
 
 $('#default-labels').on('click', function () {
     $('input:checkbox').removeAttr('checked');
+    $('#relevantInput').prop("checked", false);
 
     getDocument(documentsList[index]['id']).then(function (json) {
         if (json['suggestions'].length > 0) {
@@ -218,13 +219,14 @@ $('#search-bar').keypress(function (e) {
         $('#search-history').prepend('<div class="search-item"><i class="fa fa-times" style="color:white;"></i> ' + $('#search-bar').val() + '<br></div>');
         $('#search-bar').val('');
 
+        $('.search-item > i').on('click', function () {
+            console.log('da');
+            $(this).parent().remove();
+            refreshAllDocuments();
+        });
+
         refreshAllDocuments();
     }
-});
-
-$('.search-item > i').on('click', function () {
-    $(this).parent().remove();
-    refreshAllDocuments();
 });
 
 function selectHTML() {
@@ -258,8 +260,20 @@ $('#all').on('click', function () {
         $('#center').css('border', 'none');
         documentsList = json['documents'];
 
-        index = 0;
-        loadDocument(0);
+        if (documentsList.length === 0) {
+            $('#title').empty().append("There are no documents that match the given keywords!");
+            $('#abstract').empty();
+            $('#authors').empty();
+            $('#content').empty();
+            $('#contentHeader').empty();
+            $('#abstractHeader').empty();
+            $('#center').css('border', 'none');
+            refreshPercentages();
+        }
+        else {
+            index = 0;
+            loadDocument(0);
+        }
     });
 });
 
@@ -348,6 +362,11 @@ $('#validate').on('click', function () {
         if (!validatedID.includes(documentsList[index]['id']))
             validatedID.push(documentsList[index]['id']);
 
+        if ($('#incomplete').hasClass('active')) {
+            documentsList.splice(index, 1);
+            index--;
+        }
+
         index = (index + 1) % documentsList.length;
         loadDocument(index);
     }
@@ -376,6 +395,10 @@ $(document).ready(function () {
     if (document.cookie === "") {
         window.location.href = "login.html";
     }
+
+    let tokenJson = parseJwt(document.cookie);
+    $('#user').text(tokenJson.username);
+
     $.ajaxSetup({
         headers: {
             'Authorization': document.cookie
@@ -449,4 +472,21 @@ function highlightSubstring(index, length) {
         str.substr(index + length);
 
     $('#center').html(str);
+}
+
+document.onkeyup = function (e) {
+    if (e.which === 37)
+        $('#arrow-left').click();
+    else if (e.which === 39)
+        $('#arrow-right').click();
+    else if (e.which === 86)
+        $('#validate').click();
+    else if (e.which === 87)
+        $('#warning').click();
+};
+
+function parseJwt(token) {
+    let base64Url = token.split('.')[1];
+    let base64 = base64Url.replace('-', '+').replace('_', '/');
+    return JSON.parse(window.atob(base64));
 }
