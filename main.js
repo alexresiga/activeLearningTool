@@ -177,6 +177,8 @@ $('.dropdown-menu').children().on('click', function () {
     $('#dropdown').find('a').first().text($(this).text()).append('<b class="caret"></b>');
 });
 
+$('.dropdown-toggle').off('click');
+
 $('#clear-all').on('click', function () {
     $('#search-history').empty();
     refreshAllDocuments();
