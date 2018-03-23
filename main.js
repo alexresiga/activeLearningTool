@@ -152,10 +152,13 @@ function loadDocument(i) {
             });
             $('#center').css('border', '5px solid #942e12');
         }
+        else if (json['annotations']['warning'] === 'true')
+        {
+            $('#relevantInput').prop('checked', false);
 
+            $('#center').css('border', '5px solid #FF7900');
+        }
         // Highlight keywords
-        // TODO: make search case-insensitive
-
         getKeywords().forEach(function (keyword) {
             let centerHtml = $('#center').html().toLowerCase();
             let highlightIndexes = [];
