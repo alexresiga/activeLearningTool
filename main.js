@@ -1,13 +1,13 @@
- GET_ALL_DOCUMENTS = 'http://67.205.179.173:9000/allDocuments';
- GET_DOCUMENT = 'http://67.205.179.173:9000/document';
- GET_ANNOTATIONS = 'http://67.205.179.173:9000/annotations';
- POST_DOCUMENT = 'http://67.205.179.173:9000/document';
+// GET_ALL_DOCUMENTS = 'http://67.205.179.173:9000/allDocuments';
+// GET_DOCUMENT = 'http://67.205.179.173:9000/document';
+// GET_ANNOTATIONS = 'http://67.205.179.173:9000/annotations';
+// POST_DOCUMENT = 'http://67.205.179.173:9000/document';
 
 //LOCAL DOCUMENTS; COMMENT IT OUT FOR SERVER ONES
-// GET_ALL_DOCUMENTS = 'http://localhost:9000/allDocuments';
-// GET_DOCUMENT = 'http://localhost:9000/document';
-// GET_ANNOTATIONS = 'http://localhost:9000/annotations';
-// POST_DOCUMENT = 'http://localhost:9000/document';
+GET_ALL_DOCUMENTS = 'http://localhost:9000/allDocuments';
+GET_DOCUMENT = 'http://localhost:9000/document';
+GET_ANNOTATIONS = 'http://localhost:9000/annotations';
+POST_DOCUMENT = 'http://localhost:9000/document';
 
 let ceva = [];
 let documentsList = [];
@@ -124,7 +124,7 @@ function loadDocument(i) {
 
         $('input:checkbox').removeAttr('checked');
 
-        if (!$.isEmptyObject(json['annotations'])) {
+        if (!$.isEmptyObject(json['annotations']) && json['annotations']['relevant'] === 'true') {
             let annotations = json['annotations']['annotations'];
             $('#relevantInput').prop('checked', true);
             for (let i = 0; i < ceva.length; ++i) {
@@ -134,16 +134,7 @@ function loadDocument(i) {
             if (annotations.length > 0)
                 $('#center').css('border', '5px solid green');
         }
-
-        else if (json['suggestions'].length > 0) {
-            for (let i = 0; i < ceva.length; ++i) {
-                if (json['suggestions'].includes(ceva[i].defaultValue))
-                    $(ceva[i]).prop('checked', true);
-            }
-
-        }
-
-        if (json['annotations']['relevant'] === "false" && json['annotations']['completed'] === "true") {
+        else if (json['annotations']['relevant'] === "false" && json['annotations']['completed'] === "true") {
             $('#irrelevantInput').prop('checked', true);
             $('#annotations').css('opacity', '0.6');
             $('input:checkbox').removeAttr('checked');
@@ -152,21 +143,30 @@ function loadDocument(i) {
             });
             $('#center').css('border', '5px solid #942e12');
         }
-        else if (json['annotations']['warning'] === 'true')
-        {
+        else if (json['annotations']['warning'] === 'true') {
             $('#relevantInput').prop('checked', false);
 
             $('#center').css('border', '5px solid #FF7900');
         }
+        else if (json['suggestions'].length > 0) {
+            for (let i = 0; i < ceva.length; ++i) {
+                if (json['suggestions'].includes(ceva[i].defaultValue))
+                    $(ceva[i]).prop('checked', true);
+            }
+
+        }
         // Highlight keywords
         getKeywords().forEach(function (keyword) {
-            let centerHtml = $('#center').html().toLowerCase();
+            let abstractHtml = $('#abstract').html().toLowerCase();
+            let contentHtml = $('#content').html().toLowerCase();
             let highlightIndexes = [];
-            let htmlIndex = centerHtml.indexOf(keyword.toLowerCase());
+            let htmlIndex = contentHtml.indexOf(keyword.toLowerCase());
 
-            while (htmlIndex !== -1 && htmlIndex < centerHtml.length) {
+            let matches = 0;
+            while (htmlIndex !== -1 && htmlIndex < contentHtml.length && matches < 5000) {
                 highlightIndexes.push(htmlIndex);
-                htmlIndex = centerHtml.indexOf(keyword.toLowerCase(), htmlIndex + keyword.length);
+                htmlIndex = contentHtml.indexOf(keyword.toLowerCase(), htmlIndex + keyword.length + 1);
+                ++matches;
             }
 
             for (let i = highlightIndexes.length - 1; i >= 0; i--)
@@ -282,19 +282,23 @@ $('#all').on('click', function () {
     });
 });
 
+function noDocuments(string) {
+    $('#title').empty().append(string);
+    $('#abstract').empty();
+    $('#authors').empty();
+    $('#content').empty();
+    $('#contentHeader').empty();
+    $('#abstractHeader').empty();
+    $('#center').css('border', 'none');
+    refreshPercentages();
+}
+
 $('#complete').on('click', function () {
     getAllDocuments('true').then(function (json) {
         documentsList = json['documents'];
 
         if (documentsList.length === 0) {
-            $('#title').empty().append("There are no completed documents yet!");
-            $('#abstract').empty();
-            $('#authors').empty();
-            $('#content').empty();
-            $('#contentHeader').empty();
-            $('#abstractHeader').empty();
-            $('#center').css('border', 'none');
-            refreshPercentages();
+            noDocuments("There are no completed documents yet!");
         }
         else {
             index = 0;
@@ -309,14 +313,7 @@ $('#incomplete').on('click', function () {
         documentsList = json['documents'];
 
         if (documentsList.length === 0) {
-            $('#title').empty().append("There are no uncompleted documents left!");
-            $('#abstract').empty();
-            $('#authors').empty();
-            $('#content').empty();
-            $('#contentHeader').empty();
-            $('#abstractHeader').empty();
-            $('#center').css('border', 'none');
-            refreshPercentages();
+            noDocuments("There are no uncompleted documents left!");
         }
         else {
             index = 0;
@@ -370,6 +367,9 @@ $('#validate').on('click', function () {
         if ($('#incomplete').hasClass('active')) {
             documentsList.splice(index, 1);
             index--;
+            if (documentsList.length === 0) {
+                noDocuments("There are no uncompleted documents left!");
+            }
         }
 
         index = (index + 1) % documentsList.length;
@@ -385,7 +385,12 @@ $('#validate').on('click', function () {
         alertify.notify("Irrelevant Document", 'error', 2);
 
         $('#historyList').append('<div class="history_element" style="cursor:pointer;" id="' + index + '"><div style="color:#942e12;float:left;margin-right:2px;"><i class="fa fa-circle fa-sm"></i></div> Irrelevant</div>');
-
+        if ($('#incomplete').hasClass('active')) {
+            documentsList.splice(index, 1);
+            index--;
+            if (documentsList.length === 0)
+                noDocuments("There are no uncompleted documents left!");
+        }
         if (!validatedID.includes(documentsList[index]['id']))
             validatedID.push(documentsList[index]['id']);
 
@@ -440,6 +445,7 @@ $('#relevantInput').on('click', function () {
 
 // Behaviour of child annotations when parent annotation is clicked
 $('#annotations').on('click', '.PARENT', function () {
+    $('#relevantInput').prop('checked', true);
     if ($(this).prop('checked')) {
         $('input.child' + $(this).attr('id') + ':checkbox').prop('checked', true);
     }
@@ -468,7 +474,7 @@ $('#warning').on('click', function () {
 });
 
 function highlightSubstring(index, length) {
-    let str = $('#center').html();
+    let str = $('#content').html();
 
     str = str.substr(0, index) +
         '<span class="highlighted">' +
@@ -476,10 +482,14 @@ function highlightSubstring(index, length) {
         '</span>' +
         str.substr(index + length);
 
-    $('#center').html(str);
+    $('#content').html(str);
 }
 
 document.onkeyup = function (e) {
+    if ($('#search-bar').is(':focus')) {
+        console.log('ceva');
+        return;
+    }
     if (e.which === 37)
         $('#arrow-left').click();
     else if (e.which === 39)
