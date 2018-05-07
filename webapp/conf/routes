@@ -1,0 +1,17 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# https://www.playframework.com/documentation/latest/ScalaRouting
+# ~~~~
+
+# An example controller showing a sample home page
+GET      /                          controllers.AnnotaurusController.index
+GET 	/allDocuments				controllers.AnnotaurusController.getAllDocuments(completed: String, keyword: Option[List[String]])
+GET 	/document 					controllers.AnnotaurusController.getDocument(name: String)
+GET     /login                      controllers.AnnotaurusController.loginPage
+POST    /login						controllers.AnnotaurusController.login(username: String, password: String)
+# FIXME: If multiple tasks are to be supported, this should be rewritten to take a task ID
+GET 	/labels-for-task			controllers.AnnotaurusController.labelsForTask
+POST    /document					controllers.AnnotaurusController.updateDocument(name: String)
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.at(file)

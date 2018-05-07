@@ -1,0 +1,191 @@
+html {
+    width: 98.89%;
+    min-width: 1375px;
+    height: 90%;
+    background-color: #1F3249;
+    padding: 0;
+    margin: 0;
+
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+html, body, .col-md-12, .row {
+    height: 100%;
+
+}
+
+.row > div {
+    height: 100%;
+}
+
+#left {
+    background-color: #1F3249;
+    color: white;
+    padding-left: 25px;
+
+}
+
+#left > #toolname {
+    padding-top: 15px;
+    margin-bottom: 10px;
+    font-size: 1.55em;
+
+}
+
+.parent {
+    white-space: nowrap;
+    margin-bottom: 15px;
+}
+
+#task {
+    display: inline-block;
+    font-size: 1.2em;
+    height: 20px;
+    margin-right: 15px;
+    vertical-align: middle !important;
+    position: relative;
+}
+
+#dropdown {
+    display: inline-block;
+    position: relative;
+}
+
+.btn.btn-simple {
+    border: 3px solid lightgrey;
+    color: white !important;
+    padding: 7px 10px;
+}
+
+#dropdown-button {
+    background-color: white;
+    color: #1F3249 !important;
+    border-radius: 5px;
+}
+
+#left > #buttons .btn {
+    display: inline-block;
+    margin-left: 0;
+    margin-right: 0;
+    border-spacing: 0;
+    font-size: 0.9em;
+    padding: 7px 10px;
+}
+
+#left > #buttons .active {
+    color: gray !important;
+
+    background-color: white !important;
+
+}
+
+#view {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+}
+
+#searchistory {
+    font-size: 1.2em;
+}
+
+#searchistory > p {
+    font-size: 0.7em;
+}
+
+#statistics {
+    margin-top: 12px;
+    font-size: 1.2em;
+}
+
+#documentName {
+    font-size: 1.2em;
+}
+
+#pbar {
+    margin-top: 5px;
+    height: 10px;
+    border-radius: 5px;
+    margin: 0;
+}
+
+#history {
+    font-size: 1.2em;
+}
+
+#center {
+    background-color: white;
+    height: 90%;
+    padding: 35px !important;
+    overflow: auto;
+    font-size: 1.2em;
+    color: gray;
+}
+
+#center > #title {
+    font-size: 1.2em;
+    color: gray;
+
+}
+
+.author {
+    display: inline-block;
+    margin: 20px;
+}
+
+#center-below {
+    background-color: #1F3249;
+    height: 10%;
+    float: left;
+    width: 100%;
+    color: white;
+    text-align: center;
+    white-space: nowrap;
+}
+
+#right {
+    background-color: #1F3249;
+    font-size: 1.2em;
+    color: white;
+
+}
+
+#right > .title-right {
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+
+div#annotations {
+    color: white;
+}
+
+#relevant {
+    color: green;
+}
+
+#irrelevant {
+    color: #962d07;
+}
+
+.checkbox .checkbox-material .check:before {
+    margin-top: -5px !important;
+    margin-left: 5px !important;
+}
+
+.image:active {
+    transform: translateY(4px);
+}
+
+.highlighted {
+    background-color: yellow;
+}
+
+.image {
+    cursor: pointer;
+}
+
+i {
+    cursor: pointer;
+}

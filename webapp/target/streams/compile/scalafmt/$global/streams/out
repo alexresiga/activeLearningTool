@@ -1,0 +1,4 @@
+[0m[[0minfo[0m] [0mFormatting 1 Scala source in webapp:compile ...[0m
+[0m[[33mwarn[0m] [0m/Users/alex/Downloads/fixed/webapp/app/controllers/AnnotaurusController.scala:281: error: } expected but ) found[0m
+[0m[[33mwarn[0m] [0mif completed_type == "all") || (completed_type == "true" && completed) || (completed_type == "false" && !completed[0m
+[0m[[33mwarn[0m] [0m                                ^[0m
