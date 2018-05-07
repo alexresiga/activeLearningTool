@@ -14,6 +14,7 @@ function login() {
                 alert('Invalid user/password combination');
             },
             200: function (response) {
+                console.log(response);
                 document.cookie = response;
                 window.location.href = 'index.html'
             }

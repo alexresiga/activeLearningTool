@@ -22,51 +22,104 @@
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300|Material+Icons' rel='stylesheet'
           type='text/css'>
+    <style type="text/css">
+        .dropbtn {
+            color: black;
 
-    <script>
-        $('#addUser').on('click', function () {
-           console.log()
-        });
-    </script>
+
+            border: none;
+            cursor: pointer;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+            z-index: 1;
+            list-style-type: none;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {background-color: #f1f1f1}
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown:hover .dropbtn {
+            background-color: #203347;
+            color: white;
+        }
+    </style>
 </head>
 
 <body>
 <div class="wrapper">
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Enter new user</h4>
+                </div>
+                <div class="modal-body text-center ">
+                    <input type="text" id="username" placeholder="Name" autocomplete="off">
+                </div>
+                <div class="modal-footer text-center">
+                    <button id="saveNewUser" type="button" class="btn btn-default" data-dismiss="modal">ADD</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
     <div class="content">
         <div class="content">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-sm-5">
                         <div class="card">
                             <div class="card-header" data-background-color="purple">
                                 <h4 class="title">Users</h4>
                                 <!--<p class="category">Here is a subtitle for this table</p>-->
                             </div>
                             <div class="card-content table-responsive">
-                                <table class="table">
+                                <table class="table" id="userTable">
                                     <thead class="text-primary">
                                     <th>Name</th>
-                                    <th>Folder</th>
-                                    <th>Task</th>
-
+                                    <th>Select</th>
                                     </thead>
                                     <tbody>
                                     <tr>
                                         <td>Matei Stroia</td>
-                                        <td>folder_1</td>
-                                        <td>Task1</td>
+                                        <td><input type='checkbox' name='record'></td>
                                     </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                         <div class="row text-center">
-                            <div class="col-xs-4"><button id="addUser" class="btn btn-success">Add user</button></div>
-                            <div class="col-xs-4"><button class="btn btn-info">Update user</button></div>
-                            <div class="col-xs-4"><button class="btn btn-danger">Remove user</button></div>
+                            <div class="col-xs-4"><button type="button" id="addUser" class="btn btn-success" data-toggle="modal" data-target="#myModal">Add user</button></div>
+                            <div class="col-xs-4"><button id="update-row" class="btn btn-info">Update user</button></div>
+                            <div class="col-xs-4"><button id="delete-row" class="btn btn-danger">Remove user</button></div>
                         </div>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-7">
                         <div class="card">
                             <div class="card-header" data-background-color="purple">
                                 <h4 class="title">Tasks</h4>
@@ -76,25 +129,40 @@
                                 <table class="table">
                                     <thead class="text-primary">
                                     <th>Task</th>
+                                    <th>Folder</th>
                                     <th>User</th>
                                     <th>Stats</th>
-
                                     </thead>
                                     <tbody>
                                     <tr>
-                                        <td>Dakota Rice</td>
-                                        <td>Niger</td>
-                                        <td>Oud-Turnhout</td>
+                                        <td>Task1</td>
+                                        <td>Folder1</td>
+                                        <td>
+                                            <div class="dropdown">
+                                                <button class="dropbtn">Users <i class="fa fa-caret-down"></i></button>
+                                                <ul class="dropdown-content">
+                                                    <li><a href="#">User 1</a></li>
+                                                    <li><a href="#">User 2</a></li>
+                                                    <li><a href="#">User 3</a></li>
+
+                                                </ul>
+                                            </div>
+                                        </td>
+                                        <td>44/100</td>
                                     </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-                </div>
+                    </div>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
 </body>
 <!--   Core JS Files   -->
+<script src="../assets/js/dashboard.js" type="text/javascript"></script>
 <script src="../assets-admin/js/jquery-3.2.1.min.js" type="text/javascript"></script>
 <script src="../assets-admin/js/bootstrap.min.js" type="text/javascript"></script>
 <script src="../assets-admin/js/material.min.js" type="text/javascript"></script>

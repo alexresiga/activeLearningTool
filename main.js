@@ -487,7 +487,6 @@ function highlightSubstring(index, length) {
 
 document.onkeyup = function (e) {
     if ($('#search-bar').is(':focus')) {
-        console.log('ceva');
         return;
     }
     if (e.which === 37)
